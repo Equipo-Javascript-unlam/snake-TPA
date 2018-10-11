@@ -75,7 +75,10 @@ public class Snake {
 //	super();
 //	this.bodySnake = new bodySnake[bodySnakeLenght];
 //}
-
+	public void crecer() {
+		
+	}
+	
 	public class BodySnake {
 		private Posicion posicion;
 	}
