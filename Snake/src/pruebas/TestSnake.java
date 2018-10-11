@@ -11,7 +11,7 @@ class TestSnake {
 
 	@Test
 	void moverseEnLineaRecta() {
-		Snake s1 = new Snake(); //setear la posición
+		Snake s1 = new Snake(); //setear la posiciÃ³n
 		
 		s1.moverse(Direccion.DRC);
 		
