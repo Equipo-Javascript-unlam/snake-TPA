@@ -6,12 +6,20 @@ public class Snake {
 	private HeadSnake headSnake;
 	private ArrayList<BodySnake> bodySnake;
 	private Direccion direccion;
+	private String nombreJugador;
 	
-	public Snake(){
+	public String getNombreJugador() {
+		return nombreJugador;
+	}
+
+	public Snake(Posicion pos, String nombre){
+		nombreJugador = nombre;
+		headSnake = new HeadSnake();
+		headSnake.posicion = new Posicion(pos);
 		bodySnake = new ArrayList<BodySnake>();
 	}
-	
-	public void moverse(Direccion dir) {
+
+	public void moverse() {
 		Posicion lastPos = headSnake.posicion;
 		
 	
@@ -19,19 +27,19 @@ public class Snake {
 		switch(this.direccion) {
 		case IZQ:
 			//disminuye 1 en X
-			headSnake.posicion.setLocation(lastPos.getX()-1, lastPos.getY());
+			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() - 1);
 			break;
 		case DRC:
 //			aumenta 1 en X
-			headSnake.posicion.setLocation(lastPos.getX()+1, lastPos.getY());
+			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() + 1);
 			break;
 		case ARB:
 			//aumenta 1 en Y
-			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY()-1);
+			headSnake.posicion.setLocation(lastPos.getX() - 1, lastPos.getY());
 			break;
 		case ABJ:
 			//disminuye 1 en Y
-			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY()+1);
+			headSnake.posicion.setLocation(lastPos.getX() + 1, lastPos.getY());
 			break;
 		
 		}
@@ -77,6 +85,10 @@ public class Snake {
 //}
 	public void crecer() {
 		
+	}
+	
+	public Posicion getPosicion() {
+		return headSnake.posicion;
 	}
 	
 	public class BodySnake {

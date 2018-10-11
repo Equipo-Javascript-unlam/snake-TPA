@@ -1,17 +1,20 @@
 package com.Snake.Team.JavaScript;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tablero {
 	static final int pared = -1;
-	List<Snake> serpientes;
-	List<Fruta> frutas;
+	public List<Snake> serpientes;
+	public List<Fruta> frutas;
 	int [][]tablero;
 	int filas, columnas;
 	
 	public Tablero(int largo, int ancho, int cantidadDeFrutas, int cantidadDeViboras) {
 		this.filas = ancho;
 		this.columnas = largo;
+		serpientes = new ArrayList<>();
+		frutas = new ArrayList<>();
 		inicializarTablero();
 	}
 	
@@ -26,4 +29,17 @@ public class Tablero {
         }
 	}
 	
+	public void colocarVibora(Posicion pos, String nom) {
+		serpientes.add(new Snake(pos, nom));
+	}
+	
+	public void colision() {
+		for(Snake s : serpientes) {
+			if(s.getPosicion().getX() == pared || s.getPosicion().getY() == pared) {
+				System.out.println("La serpiente " + s.getNombreJugador() + " ha chocado contra la pared");
+			}
+			
+			
+		}
+	}
 }

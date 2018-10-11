@@ -12,6 +12,10 @@ public class Posicion extends Point2D{
 		this.y = y;
 	}
 
+	public Posicion(Posicion pos) {
+		this.x = pos.getX();
+		this.y = pos.getY();
+	}
 	@Override
 	public double getX() {
 		// TODO Auto-generated method stub
@@ -22,6 +26,11 @@ public class Posicion extends Point2D{
 	public double getY() {
 		
 		return this.y;
+	}
+
+	@Override
+	public String toString() {
+		return x + "," + y;
 	}
 
 	@Override
