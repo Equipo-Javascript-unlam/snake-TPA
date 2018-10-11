@@ -14,29 +14,7 @@ public class Snake {
 	public void moverse(Direccion dir) {
 		Posicion lastPos = headSnake.posicion;
 		
-		//pregunto si hay cambio de direccion o no
-		switch(dir) {
-			case IZQ:
-				if((this.direccion == Direccion.DRC && bodySnake.isEmpty()) || 
-						this.direccion != Direccion.DRC)
-					this.direccion = dir;
-				break;
-			case DRC:
-				if((this.direccion == Direccion.IZQ && bodySnake.isEmpty()) || 
-						this.direccion != Direccion.IZQ)
-					this.direccion = dir;
-				break;
-			case ARB:
-				if((this.direccion == Direccion.ABJ && bodySnake.isEmpty()) || 
-						this.direccion != Direccion.ABJ)
-					this.direccion = dir;
-				break;
-			case ABJ:
-				if((this.direccion == Direccion.ARB && bodySnake.isEmpty()) || 
-						this.direccion != Direccion.ARB)
-					this.direccion = dir;
-				break;
-		}
+	
 		//seteo la nueva posicion de la serpiente
 		switch(this.direccion) {
 		case IZQ:
@@ -66,6 +44,29 @@ public class Snake {
 			}
 		}
 	
+	}
+	
+	
+	public void cambiarDireccion(Direccion dir) {
+		//pregunto si hay cambio de direccion o no
+			switch(dir) {
+				case IZQ:
+					if(bodySnake.isEmpty() || this.direccion != Direccion.DRC)
+						this.direccion = dir;
+					break;
+				case DRC:
+					if(bodySnake.isEmpty() || this.direccion != Direccion.IZQ)
+						this.direccion = dir;
+					break;		
+				case ARB:
+					if(bodySnake.isEmpty() || this.direccion != Direccion.ABJ)
+						this.direccion = dir;
+					break;
+				case ABJ:
+					if(bodySnake.isEmpty() || this.direccion != Direccion.ARB)
+						this.direccion = dir;
+					break;
+				}
 	}
 	
 //	private BodySnake[] bodySnake;
