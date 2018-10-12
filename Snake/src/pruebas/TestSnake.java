@@ -6,7 +6,9 @@ import javax.swing.table.TableColumn;
 
 import org.junit.jupiter.api.Test;
 
+import com.Snake.Team.JavaScript.Consumible;
 import com.Snake.Team.JavaScript.Direccion;
+import com.Snake.Team.JavaScript.Fruta;
 import com.Snake.Team.JavaScript.Posicion;
 import com.Snake.Team.JavaScript.Snake;
 import com.Snake.Team.JavaScript.Tablero;
@@ -25,8 +27,8 @@ class TestSnake {
 	
 	@Test
 	void cambiarDireccion() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");//Posicion inicial
-		Posicion p = new Posicion(2,0);//posicion esperada
+		Snake s1 = new Snake(new Posicion(1,2), "pepe");//Posicion inicial
+		Posicion p = new Posicion(2,1);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.DRC);
 		s1.cambiarDireccion(Direccion.ABJ);
@@ -39,7 +41,7 @@ class TestSnake {
 	
 	@Test
 	void  choqueDeDosCabezasMismaPosicion() {
-		Tablero t = new Tablero(5,5,5,2);
+		Tablero t = new Tablero(5, 5, 5, 2);
 		t.colocarVibora(new Posicion(1,1), "pepe");
 		t.colocarVibora(new Posicion(1,3), "papa");
 		//Setear la posicion inicial
@@ -57,17 +59,24 @@ class TestSnake {
 	
 	@Test
 	void choqueConLaPared() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");//Empezar cerca de la pared
-		//Tablero t = new Tablero();
+		Tablero t = new Tablero(5, 5, 5, 2);
 		
-		//s1.moverse(a una pared);
-		//t.colision();//mostrar mensaje de chocar contra pared
-		//Assert.assertEquals(null, cabeza);
+		t.colocarVibora(new Posicion(1,1), "pepe");
+		t.serpientes.get(0).cambiarDireccion(Direccion.IZQ);
+		t.serpientes.get(0).moverse();
+		t.colision();//mostrar mensaje de chocar contra pared
 	}
 	
 	@Test
 	void consumirFrutaYCrecer() {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");
+		Fruta fruta = new Fruta(new Posicion(1,2));
+		
+		s1.cambiarDireccion(Direccion.DRC);
+		s1.moverse();
+		s1.comerConsumible(fruta);
+		
+		assertEquals(2, s1.getLongitud());
 	}
 	
 	@Test
@@ -78,12 +87,26 @@ class TestSnake {
 	
 	@Test
 	void moverseHaciaAtrasSinCuerpo() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");
+		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
+		Posicion p = new Posicion(3,2);//posicion esperada
+		
+		s1.cambiarDireccion(Direccion.DRC);
+		s1.cambiarDireccion(Direccion.IZQ);
+		s1.moverse();
+		assertEquals(p, s1.getPosicion());
+		
 	}
 	
 	@Test
 	void moverseHaciaAtrasConCuerpo() {
-		Snake s1 = new Snake(new Posicion(1,5), "pepe");
+		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
+		Posicion p = new Posicion(3,4);//posicion esperada
+		
+		s1.cambiarDireccion(Direccion.DRC);
+		s1.crecer();
+		s1.cambiarDireccion(Direccion.IZQ);
+		s1.moverse();
+		assertEquals(p, s1.getPosicion());
 	}
 	
 	@Test
