@@ -2,8 +2,6 @@ package com.Snake.Team.JavaScript;
 
 import java.util.ArrayList;
 
-import javax.swing.plaf.BorderUIResource;
-
 import com.Snake.Team.JavaScript.Consumible.tipoConsumible;
 
 public class Snake {
@@ -67,25 +65,25 @@ public class Snake {
 				case IZQ:
 					if(bodySnake.isEmpty() || this.direccion != Direccion.DRC) {
 						this.direccion = dir;
-						this.orientacion = this.orientacion.izquierda;
+						this.orientacion = Dir.izquierda;
 					}
 					break;
 				case DRC:
 					if(bodySnake.isEmpty() || this.direccion != Direccion.IZQ) {
 						this.direccion = dir;
-						this.orientacion = this.orientacion.derecha;
+						this.orientacion = Dir.derecha;
 					}
 					break;		
 				case ARB:
 					if(bodySnake.isEmpty() || this.direccion != Direccion.ABJ) {
 						this.direccion = dir;
-						this.orientacion = this.orientacion.arriba;
+						this.orientacion = Dir.arriba;
 					}
 					break;
 				case ABJ:
 					if(bodySnake.isEmpty() || this.direccion != Direccion.ARB) {
 						this.direccion = dir;
-						this.orientacion = this.orientacion.abajo;
+						this.orientacion = Dir.abajo;
 					}
 					break;
 				}

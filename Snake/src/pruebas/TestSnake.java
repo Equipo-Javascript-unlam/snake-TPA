@@ -39,16 +39,14 @@ class TestSnake {
 	@Test
 	void  choqueDeDosCabezasMismaPosicion() {
 		Tablero t = new Tablero(5, 5, 1, 2);
-		t.colocarVibora(new Posicion(1,1), "pepe");
-		t.colocarVibora(new Posicion(1,3), "papa");
+		t.colocarVibora(new Posicion(1,1), "cabeza1");
+		t.colocarVibora(new Posicion(1,3), "cabeza2");
 		
 		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
 		t.serpientes.get(1).cambiarDireccion(Direccion.IZQ);
 		t.serpientes.get(0).moverse();
 		t.serpientes.get(1).moverse();
 		t.colision();
-		//Borrar la instancia, comprobar que la cabeza sea null
-		//Assert.assertEquals(null, cabeza);
 	}
 	
 	@Test
@@ -107,7 +105,7 @@ class TestSnake {
 	void choqueConSuPropioCuerpo() {
 		Tablero t = new Tablero(6, 6, 0, 1);
 		
-		t.colocarVibora(new Posicion(4,3), "pepe");
+		t.colocarVibora(new Posicion(4,3), "Aldo");
 		
 		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
 		t.serpientes.get(0).crecer();
