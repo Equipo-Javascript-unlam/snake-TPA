@@ -2,11 +2,8 @@ package pruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import javax.swing.table.TableColumn;
-
 import org.junit.jupiter.api.Test;
 
-import com.Snake.Team.JavaScript.Consumible;
 import com.Snake.Team.JavaScript.Direccion;
 import com.Snake.Team.JavaScript.Fruta;
 import com.Snake.Team.JavaScript.Posicion;
@@ -41,12 +38,9 @@ class TestSnake {
 	
 	@Test
 	void  choqueDeDosCabezasMismaPosicion() {
-		Tablero t = new Tablero(5, 5, 5, 2);
+		Tablero t = new Tablero(5, 5, 1, 2);
 		t.colocarVibora(new Posicion(1,1), "pepe");
 		t.colocarVibora(new Posicion(1,3), "papa");
-		//Setear la posicion inicial
-		//Snake s1 = new Snake();//(1;1)
-		//Snake s2 = new Snake(new Posicion(1,3));//(1;3)
 		
 		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
 		t.serpientes.get(1).cambiarDireccion(Direccion.IZQ);
@@ -111,7 +105,21 @@ class TestSnake {
 	
 	@Test
 	void choqueConSuPropioCuerpo() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");
+		Tablero t = new Tablero(6, 6, 0, 1);
+		
+		t.colocarVibora(new Posicion(4,3), "pepe");
+		
+		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
+		t.serpientes.get(0).crecer();
+		t.serpientes.get(0).crecer();
+		t.serpientes.get(0).crecer();
+		t.serpientes.get(0).cambiarDireccion(Direccion.ABJ);
+		t.serpientes.get(0).moverse();
+		t.serpientes.get(0).cambiarDireccion(Direccion.IZQ);
+		t.serpientes.get(0).moverse();
+		t.serpientes.get(0).cambiarDireccion(Direccion.ARB);
+		t.serpientes.get(0).moverse();
+		t.colision();
 	}
 	
 	@Test

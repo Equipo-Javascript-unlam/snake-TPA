@@ -3,10 +3,12 @@ package com.Snake.Team.JavaScript;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.Snake.Team.JavaScript.Snake.BodySnake;
+
 public class Tablero {
 	private final int IDFRUTA = 3;
 	private final int IDPU = 4;
-	static final int pared = -1;
+	static final int PARED = -1;
 	public List<Snake> serpientes;
 	public List<Fruta> frutas;
 	public List<PowerUp> powerUps;
@@ -36,7 +38,7 @@ public class Tablero {
         for (int f = 0; f < filas; f++) {
             for (int c = 0; c < columnas; c++) {
                 if (c == 0 || c == columnas - 1 || f == 0 || f == filas - 1)
-                    tablero[f][c] = pared;
+                    tablero[f][c] = PARED;
             }
         }
 	}
@@ -69,6 +71,20 @@ public class Tablero {
 		return i;
 	}
 	
+	private int buscarPowerUp(int f, int c) {
+		Posicion pos = new Posicion(f, c);
+		int i = 0;
+		
+		for(PowerUp powUp : powerUps) {
+			if(powUp.devolverPosicion() == pos)
+				break;
+			
+			i ++;
+		}
+		
+		return i;
+	}
+	
 	public void colocarVibora(Posicion pos, String nom) {
 		serpientes.add(new Snake(pos, nom));
 	}
@@ -92,17 +108,27 @@ public class Tablero {
 			fila = (int) s.getPosicion().getX();
 			columna = (int) s.getPosicion().getY();
 			
-			if(tablero[fila][columna] == pared) {
-				System.out.println(s.getNombreJugador() + " ha chocado contra la pared");			
+			if(tablero[fila][columna] == PARED) {
+				s.morir();			
 			}
 			
 			if(tablero[fila][columna] == IDFRUTA) {
 				tablero[fila][columna] = 0;
 				int i = buscarFruta(fila, columna);
+				System.out.println(i);
 				s.comerConsumible(frutas.get(i));
 				frutas.remove(i);
-				
 			}
+			
+			if(tablero[fila][columna] == IDPU) {
+				tablero[fila][columna] = 0;
+				int i = buscarPowerUp(fila, columna);
+				s.comerConsumible(powerUps.get(i));
+				powerUps.remove(i);	
+			}
+			
+			if(s.comeSuCuerpo())
+				s.morir();
 		}
 	}
 }

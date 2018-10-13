@@ -2,6 +2,8 @@ package com.Snake.Team.JavaScript;
 
 import java.util.ArrayList;
 
+import javax.swing.plaf.BorderUIResource;
+
 import com.Snake.Team.JavaScript.Consumible.tipoConsumible;
 
 public class Snake {
@@ -16,6 +18,10 @@ public class Snake {
 		return nombreJugador;
 	}
 
+	public ArrayList<BodySnake> getCuerpo(){
+		return this.bodySnake;
+	}
+	
 	public Snake(Posicion pos, String nombre){
 		nombreJugador = nombre;
 		headSnake = new HeadSnake(pos);
@@ -91,6 +97,14 @@ public class Snake {
 //	super();
 //	this.bodySnake = new bodySnake[bodySnakeLenght];
 //}
+	public boolean comeSuCuerpo() {       
+        for (BodySnake bs : bodySnake)
+            if (this.headSnake.posicion == bs.getPosicion())
+                return true;
+        
+        return false;
+	}
+	
 	enum Dir{
 		arriba(-1, 0), abajo(1, 0), izquierda(0, -1), derecha(0, 1);
 		final int f, c;
@@ -121,10 +135,24 @@ public class Snake {
 		bodySnake.add(nuevaParte);
 	}
 	
+	
+	public void morir() {
+		if(!bodySnake.isEmpty()) {
+			for(int i = 0; i < bodySnake.size(); i ++)
+				bodySnake.remove(i);
+		}
+		
+		System.out.println(this.nombreJugador + " ha muerto.");
+	}
+	
 	public void comerConsumible(Consumible comida) {
 		if(comida.queEs() == tipoConsumible.FRUTA) {
 			cantidadDeFrutaConsumida ++;
 			crecer();
+		}
+		
+		if(comida.queEs() == tipoConsumible.POWERUP) {
+			System.out.println("comiste un poder");
 		}
 	}
 	
@@ -133,14 +161,16 @@ public class Snake {
 		return cantidadDeFrutaConsumida;
 	}
 	
-	
+		
 	public Posicion getPosicion() {
 		return headSnake.posicion;
 	}
 	
+	
 	public int getLongitud() {
 		return bodySnake.size() + 1;
 	}
+	
 	
 	public class BodySnake {
 		private Posicion posicion;
@@ -148,7 +178,12 @@ public class Snake {
 		public BodySnake(Posicion pos) {
 			this.posicion = pos;
 		}
+		
+		public Posicion getPosicion() {
+			return posicion;
+		}
 	}
+	
 	
 	public class HeadSnake{
 		private Posicion posicion;
