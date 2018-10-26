@@ -39,4 +39,12 @@ public class Posicion extends Point2D{
 		this.y = y;
 		
 	}
+	
+	public Posicion sumar(Posicion pos) {
+		return new Posicion(this.x + pos.getX(), this.y + pos.getY());
+	}
+	
+	public Posicion getPos() {
+		return new Posicion(this.x, this.y);
+	}
 }

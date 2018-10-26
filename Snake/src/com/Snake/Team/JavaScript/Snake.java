@@ -89,12 +89,6 @@ public class Snake {
 				}
 	}
 	
-//	private BodySnake[] bodySnake;
-//	
-//	public Snake(int bodySnakeMaxLenght) {
-//	super();
-//	this.bodySnake = new bodySnake[bodySnakeLenght];
-//}
 	public boolean comeSuCuerpo() {       
         for (BodySnake bs : bodySnake)
             if (this.headSnake.posicion == bs.getPosicion())
@@ -111,22 +105,28 @@ public class Snake {
 			this.f = f;
 			this.c = c;
 		}
+		
+		Posicion sentido() {
+			return new Posicion(this.f, this.c);
+		}
 	}
 		
 	public void crecer() {
-		int f, c;
+		//int f, c;
 		Posicion pos;
 		BodySnake nuevaParte;
 		
 		if(bodySnake.isEmpty()) {
-			f = (int)headSnake.posicion.getX() + orientacion.f;
+			/*f = (int)headSnake.posicion.getX() + orientacion.f;
 			c = (int)headSnake.posicion.getY() + orientacion.c;
-			pos = new Posicion(f, c);
+			pos = new Posicion(f, c);*/
+			pos = headSnake.posicion.sumar(orientacion.sentido());
 		}
 		else {
-			f = (int)bodySnake.get(bodySnake.size() - 1).posicion.getX() + orientacion.f;
+			/*f = (int)bodySnake.get(bodySnake.size() - 1).posicion.getX() + orientacion.f;
 			c = (int)bodySnake.get(bodySnake.size() - 1).posicion.getY() + orientacion.c;
-			pos = new Posicion(f, c);
+			pos = new Posicion(f, c);*/
+			pos = bodySnake.get(bodySnake.size() - 1).posicion.sumar(orientacion.sentido());
 		}	
 		
 		nuevaParte = new BodySnake(pos);
@@ -135,12 +135,8 @@ public class Snake {
 	
 	
 	public void morir() {
-		if(!bodySnake.isEmpty()) {
-			for(int i = 0; i < bodySnake.size(); i ++)
-				bodySnake.remove(i);
-		}
-		
-		System.out.println(this.nombreJugador + " ha muerto.");
+		bodySnake.clear();		
+		//System.out.println(this.nombreJugador + " ha muerto.");
 	}
 	
 	public void comerConsumible(Consumible comida) {

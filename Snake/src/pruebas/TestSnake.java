@@ -37,6 +37,29 @@ class TestSnake {
 	}
 	
 	@Test
+	void moverseHaciaAtrasSinCuerpo() {
+		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
+		Posicion p = new Posicion(3,2);//posicion esperada
+		
+		s1.cambiarDireccion(Direccion.DRC);
+		s1.cambiarDireccion(Direccion.IZQ);
+		s1.moverse();
+		assertEquals(p, s1.getPosicion());
+	}
+	
+	@Test
+	void moverseHaciaAtrasConCuerpo() {
+		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
+		Posicion p = new Posicion(3,4);//posicion esperada
+		
+		s1.cambiarDireccion(Direccion.DRC);
+		s1.crecer();
+		s1.cambiarDireccion(Direccion.IZQ);
+		s1.moverse();
+		assertEquals(p, s1.getPosicion());
+	}
+	
+	@Test
 	void  choqueDeDosCabezasMismaPosicion() {
 		Tablero t = new Tablero(5, 5, 1, 2);
 		t.colocarVibora(new Posicion(1,1), "cabeza1");
@@ -72,36 +95,6 @@ class TestSnake {
 	}
 	
 	@Test
-	void choqueConCuerpoDeOtraSerpiente() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");
-		Snake s2 = new Snake(new Posicion(2,2), "papa");
-	}
-	
-	@Test
-	void moverseHaciaAtrasSinCuerpo() {
-		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
-		Posicion p = new Posicion(3,2);//posicion esperada
-		
-		s1.cambiarDireccion(Direccion.DRC);
-		s1.cambiarDireccion(Direccion.IZQ);
-		s1.moverse();
-		assertEquals(p, s1.getPosicion());
-		
-	}
-	
-	@Test
-	void moverseHaciaAtrasConCuerpo() {
-		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
-		Posicion p = new Posicion(3,4);//posicion esperada
-		
-		s1.cambiarDireccion(Direccion.DRC);
-		s1.crecer();
-		s1.cambiarDireccion(Direccion.IZQ);
-		s1.moverse();
-		assertEquals(p, s1.getPosicion());
-	}
-	
-	@Test
 	void choqueConSuPropioCuerpo() {
 		Tablero t = new Tablero(6, 6, 0, 1);
 		
@@ -121,9 +114,14 @@ class TestSnake {
 	}
 	
 	@Test
-	void dosCabezasSeCruzan() {
+	void choqueConCuerpoDeOtraSerpiente() {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");
 		Snake s2 = new Snake(new Posicion(2,2), "papa");
 	}
 	
+	@Test
+	void dosCabezasSeCruzan() {
+		Snake s1 = new Snake(new Posicion(1,1), "pepe");
+		Snake s2 = new Snake(new Posicion(2,2), "papa");
+	}
 }
