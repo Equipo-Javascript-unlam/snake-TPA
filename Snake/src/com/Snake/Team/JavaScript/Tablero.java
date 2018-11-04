@@ -25,7 +25,6 @@ public class Tablero {
 		for(int i = 0; i < cantidadDeFrutas; i ++) {
 			colocarFrutas();
 		}
-		
 		//solo se agregan 2 para probar
 		for(int i = 0; i < 2; i ++) {
 			colocarPowerUp();
@@ -51,7 +50,6 @@ public class Tablero {
 			col = (int)(Math.random() * (this.filas - 1)) + 1;
 			fil = (int)(Math.random() * (this.columnas - 1)) + 1;
 		}
-		
 		Posicion pos = new Posicion(fil, col);
 		
 		return pos;
@@ -62,14 +60,10 @@ public class Tablero {
 		int i = 0;
 		
 		for(Fruta fruta : frutas) {
-			//if(fruta.devolverPosicion().getX() == pos.getX() &&
-				//	fruta.devolverPosicion().getY() == pos.getY())
 			if(fruta.devolverPosicion().equals(pos))
 				break;
-			
 			i ++;
 		}
-		
 		return i;
 	}
 	
@@ -78,14 +72,10 @@ public class Tablero {
 		int i = 0;
 		
 		for(PowerUp powUp : powerUps) {
-			//if(powUp.devolverPosicion().getX() == pos.getX() && 
-			//		powUp.devolverPosicion().getY() == pos.getY())
 			if(powUp.devolverPosicion().equals(pos))
-				break;
-			
+				break;	
 			i ++;
-		}
-		
+		}	
 		return i;
 	}
 	
@@ -135,7 +125,6 @@ public class Tablero {
 			}
 			
 			for(Snake s1 : serpientes) {
-				//if(!s.equals(s1) && s.getPosicion().getX() == s1.getPosicion().getX() && s.getPosicion().getY() == s1.getPosicion().getY()) {
 				if(!s.equals(s1) && s.getPosicion().equals(s1.getPosicion())) {
 					s.morir();
 					s1.morir();
