@@ -30,22 +30,17 @@ public class Snake {
 	public void moverse() {
 		Posicion lastPos = headSnake.posicion;
 		
-		//seteo la nueva posicion de la serpiente
 		switch(this.direccion) {
 		case IZQ:
-			//disminuye 1 en X
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() - 1);
 			break;
 		case DRC:
-//			aumenta 1 en X
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() + 1);
 			break;
 		case ARB:
-			//aumenta 1 en Y
 			headSnake.posicion.setLocation(lastPos.getX() - 1, lastPos.getY());
 			break;
 		case ABJ:
-			//disminuye 1 en Y
 			headSnake.posicion.setLocation(lastPos.getX() + 1, lastPos.getY());
 			break;
 		}
@@ -60,33 +55,27 @@ public class Snake {
 	}
 	
 	public void cambiarDireccion(Direccion dir) {
-		//pregunto si hay cambio de direccion o no
-			switch(dir) {
-				case IZQ:
-					if(bodySnake.isEmpty() || this.direccion != Direccion.DRC) {
-						this.direccion = dir;
-						this.orientacion = Dir.izquierda;
-					}
-					break;
-				case DRC:
-					if(bodySnake.isEmpty() || this.direccion != Direccion.IZQ) {
-						this.direccion = dir;
-						this.orientacion = Dir.derecha;
-					}
-					break;		
-				case ARB:
-					if(bodySnake.isEmpty() || this.direccion != Direccion.ABJ) {
-						this.direccion = dir;
-						this.orientacion = Dir.arriba;
-					}
-					break;
-				case ABJ:
-					if(bodySnake.isEmpty() || this.direccion != Direccion.ARB) {
-						this.direccion = dir;
-						this.orientacion = Dir.abajo;
-					}
-					break;
-				}
+		switch(dir) {
+			case IZQ:
+				setDirection(dir, Direccion.DRC, Dir.izquierda);
+				break;
+			case DRC:
+				setDirection(dir, Direccion.IZQ, Dir.derecha);
+				break;		
+			case ARB:
+				setDirection(dir, Direccion.ABJ, Dir.arriba);
+				break;
+			case ABJ:
+				setDirection(dir, Direccion.ARB, Dir.abajo);
+				break;
+		}
+	}
+
+	private void setDirection(Direccion dir, Direccion opuesto, Dir orientacion) {
+		if(bodySnake.isEmpty() || this.direccion != opuesto) {
+			this.direccion = dir;
+			this.orientacion = orientacion;
+		}
 	}
 	
 	public boolean comeSuCuerpo() {       
@@ -99,33 +88,26 @@ public class Snake {
 	
 	enum Dir{
 		arriba(-1, 0), abajo(1, 0), izquierda(0, -1), derecha(0, 1);
-		final int f, c;
+		final int fila, columna;
 		
-		Dir(int f, int c){
-			this.f = f;
-			this.c = c;
+		Dir(int fila, int columna){
+			this.fila = fila;
+			this.columna = columna;
 		}
 		
 		Posicion sentido() {
-			return new Posicion(this.f, this.c);
+			return new Posicion(this.fila, this.columna);
 		}
 	}
 		
 	public void crecer() {
-		//int f, c;
 		Posicion pos;
 		BodySnake nuevaParte;
 		
 		if(bodySnake.isEmpty()) {
-			/*f = (int)headSnake.posicion.getX() + orientacion.f;
-			c = (int)headSnake.posicion.getY() + orientacion.c;
-			pos = new Posicion(f, c);*/
 			pos = headSnake.posicion.sumar(orientacion.sentido());
 		}
 		else {
-			/*f = (int)bodySnake.get(bodySnake.size() - 1).posicion.getX() + orientacion.f;
-			c = (int)bodySnake.get(bodySnake.size() - 1).posicion.getY() + orientacion.c;
-			pos = new Posicion(f, c);*/
 			pos = bodySnake.get(bodySnake.size() - 1).posicion.sumar(orientacion.sentido());
 		}	
 		

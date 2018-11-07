@@ -1,6 +1,6 @@
 package com.Visual.Snake.Team.JavaScript;
 
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 
 public class Menu extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
