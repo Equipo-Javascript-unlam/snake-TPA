@@ -52,9 +52,14 @@ public class Menu extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JButton btnCrearSala = new JButton("Sala ");
-		btnCrearSala.addActionListener(new ActionListener() {
+ 		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new VentanaTablero();
+				try {
+					new VentanaTablero();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

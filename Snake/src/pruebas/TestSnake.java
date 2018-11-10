@@ -15,7 +15,7 @@ class TestSnake {
 	@Test
 	void moverseEnLineaRecta() {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");//Posicion inicial
-		Posicion p = new Posicion(1,2);//posicion esperada
+		Posicion p = new Posicion(2,1);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.DRC);
 		s1.moverse();
@@ -25,21 +25,20 @@ class TestSnake {
 	@Test
 	void cambiarDireccion() {
 		Snake s1 = new Snake(new Posicion(1,2), "pepe");//Posicion inicial
-		Posicion p = new Posicion(2,1);//posicion esperada
+		Posicion p = new Posicion(0,3);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.DRC);
 		s1.cambiarDireccion(Direccion.ABJ);
 		s1.moverse();
 		s1.cambiarDireccion(Direccion.IZQ);
 		s1.moverse();
-		
 		assertEquals(p, s1.getPosicion());
 	}
 	
 	@Test
 	void moverseHaciaAtrasSinCuerpo() {
 		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
-		Posicion p = new Posicion(3,2);//posicion esperada
+		Posicion p = new Posicion(2,3);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.DRC);
 		s1.cambiarDireccion(Direccion.IZQ);
@@ -50,7 +49,7 @@ class TestSnake {
 	@Test
 	void moverseHaciaAtrasConCuerpo() {
 		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
-		Posicion p = new Posicion(3,4);//posicion esperada
+		Posicion p = new Posicion(4,3);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.DRC);
 		s1.crecer();

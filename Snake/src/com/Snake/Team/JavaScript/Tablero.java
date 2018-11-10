@@ -134,4 +134,23 @@ public class Tablero {
 			}
 		}
 	}
+	
+	public Snake getSnake(int i)
+	{
+		return this.serpientes.get(i);
+	}
+	
+	public int getCantidadFrutas()
+	{
+		return this.frutas.size();
+	}
+	
+	public Posicion getPosicionFruta(int i)
+	{
+		return this.frutas.get(i).devolverPosicion();
+	}
+	public int getCantidadSnakes()
+	{
+		return this.serpientes.size();
+	}
 }

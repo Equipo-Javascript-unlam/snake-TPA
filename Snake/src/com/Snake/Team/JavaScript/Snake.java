@@ -28,28 +28,28 @@ public class Snake {
 	}
 
 	public void moverse() {
-		Posicion lastPos = headSnake.posicion;
-		
+		Posicion lastPos = new Posicion(headSnake.posicion),auxPos;
+		//System.out.println(headSnake.posicion);
 		switch(this.direccion) {
-		case IZQ:
+		case ARB:
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() - 1);
 			break;
-		case DRC:
+		case ABJ:
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() + 1);
 			break;
-		case ARB:
+		case IZQ:
 			headSnake.posicion.setLocation(lastPos.getX() - 1, lastPos.getY());
 			break;
-		case ABJ:
+		case DRC:
 			headSnake.posicion.setLocation(lastPos.getX() + 1, lastPos.getY());
 			break;
 		}
 		
 		if(!bodySnake.isEmpty()) {
 			for(BodySnake nodo: bodySnake) {
-				Posicion auxPos = nodo.posicion;
-				nodo.posicion = lastPos;
-				lastPos = auxPos;
+				auxPos = new Posicion(nodo.posicion);
+				nodo.posicion = new Posicion(lastPos);
+				lastPos = new Posicion(auxPos);
 			}
 		}
 	}
@@ -80,14 +80,14 @@ public class Snake {
 	
 	public boolean comeSuCuerpo() {       
         for (BodySnake bs : bodySnake)
-            if (this.headSnake.posicion == bs.getPosicion())
+            if (this.headSnake.posicion.equals(bs.getPosicion()))
                 return true;
         
         return false;
 	}
 	
 	enum Dir{
-		arriba(-1, 0), abajo(1, 0), izquierda(0, -1), derecha(0, 1);
+		izquierda(-1, 0), derecha(1, 0), abajo(0, -1), arriba(0, 1);
 		final int fila, columna;
 		
 		Dir(int fila, int columna){
@@ -98,21 +98,31 @@ public class Snake {
 		Posicion sentido() {
 			return new Posicion(this.fila, this.columna);
 		}
-	}
-		
+	}	
 	public void crecer() {
 		Posicion pos;
 		BodySnake nuevaParte;
 		
-		if(bodySnake.isEmpty()) {
+		if(bodySnake.isEmpty()) 
 			pos = headSnake.posicion.sumar(orientacion.sentido());
+		
+		else{ 
+			
+			if(bodySnake.size()==1)
+				pos = bodySnake.get(bodySnake.size() - 1).posicion.sumar(orientacion.sentido());	
+			else {
+				pos=bodySnake.get(bodySnake.size() - 1).posicion;
+				pos.sumar(pos);
+				pos.restar(bodySnake.get(bodySnake.size() - 2).posicion);
+			
+				
+			}
+				
 		}
-		else {
-			pos = bodySnake.get(bodySnake.size() - 1).posicion.sumar(orientacion.sentido());
-		}	
 		
 		nuevaParte = new BodySnake(pos);
 		bodySnake.add(nuevaParte);
+		
 	}
 	
 	
