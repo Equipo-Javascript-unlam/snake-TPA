@@ -51,7 +51,7 @@ public class Menu extends JFrame {
 		lblNewLabel.setBounds(171, 36, 122, 14);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnCrearSala = new JButton("Sala ");
+		JButton btnCrearSala = new JButton("Nueva Sala ");
  		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -63,7 +63,7 @@ public class Menu extends JFrame {
 				dispose();
 			}
 		});
-		btnCrearSala.setBounds(161, 69, 89, 23);
+		btnCrearSala.setBounds(150, 61, 110, 23);
 		contentPane.add(btnCrearSala);
 		setVisible(true); 
 	}

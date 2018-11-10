@@ -1,8 +1,13 @@
 package pruebas;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+//import static org.junit.Assert.*;
+
+//import org.junit.Test;
 
 import com.Snake.Team.JavaScript.Direccion;
 import com.Snake.Team.JavaScript.Fruta;
@@ -114,8 +119,11 @@ class TestSnake {
 	
 	@Test
 	void choqueConCuerpoDeOtraSerpiente() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");
-		Snake s2 = new Snake(new Posicion(2,2), "papa");
+		Snake snake1 = new Snake(new Posicion(1,1), "pepe");
+		Snake snake2 = new Snake(new Posicion(2,2), "papa");
+		
+		
+		
 	}
 	
 	@Test

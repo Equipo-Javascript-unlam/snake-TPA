@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.Snake.Team.JavaScript.Snake.BodySnake;
+
 public class Tablero {
 	private final int IDFRUTA = 3;
 	private final int IDPU = 4;
@@ -22,9 +24,9 @@ public class Tablero {
 		powerUps = new ArrayList<>();
 		inicializarTablero();
 		
-		for(int i = 0; i < cantidadDeFrutas; i ++) {
+		//for(int i = 0; i < cantidadDeFrutas; i ++) {
 			colocarFrutas();
-		}
+		//}
 		//solo se agregan 2 para probar
 		for(int i = 0; i < 2; i ++) {
 			colocarPowerUp();
@@ -115,6 +117,7 @@ public class Tablero {
 				int i = buscarFruta(fila, columna);
 				s.comerConsumible(frutas.get(i));
 				frutas.remove(i);
+				colocarFrutas();
 			}
 			
 			if(tablero[fila][columna] == IDPU) {
@@ -125,12 +128,22 @@ public class Tablero {
 			}
 			
 			for(Snake s1 : serpientes) {
-				if(!s.equals(s1) && s.getPosicion().equals(s1.getPosicion())) {
+				if(!s.equals(s1) && s.getPosicion().equals(s1.getPosicion())) { //head to head
 					s.morir();
 					s1.morir();
 					it.remove();
-					break;
+					
 				}
+				else{ // head to boody
+					ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
+					for( BodySnake body : bodyS1) {
+						if(s.getPosicion().equals(body.getPosicion())) {
+							s.morir();
+							break;	
+						}	
+					}
+				}
+				
 			}
 		}
 	}
