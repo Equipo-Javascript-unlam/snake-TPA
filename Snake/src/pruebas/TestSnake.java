@@ -65,7 +65,7 @@ class TestSnake {
 	
 	@Test
 	void  choqueDeDosCabezasMismaPosicion() {
-		Tablero t = new Tablero(5, 5, 1, 2);
+		Tablero t = new Tablero(5, 5, 1);
 		t.colocarVibora(new Posicion(1,1), "cabeza1");
 		t.colocarVibora(new Posicion(1,3), "cabeza2");
 		
@@ -78,7 +78,7 @@ class TestSnake {
 	
 	@Test
 	void choqueConLaPared() {
-		Tablero t = new Tablero(5, 5, 5, 2);
+		Tablero t = new Tablero(5, 5, 5);
 		
 		t.colocarVibora(new Posicion(1,1), "pepe");
 		t.serpientes.get(0).cambiarDireccion(Direccion.IZQ);
@@ -100,7 +100,7 @@ class TestSnake {
 	
 	@Test
 	void choqueConSuPropioCuerpo() {
-		Tablero t = new Tablero(6, 6, 0, 1);
+		Tablero t = new Tablero(6, 6, 0);
 		
 		t.colocarVibora(new Posicion(4,3), "Aldo");
 		

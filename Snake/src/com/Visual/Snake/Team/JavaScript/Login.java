@@ -16,6 +16,7 @@ public class Login extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	static String nombre;
 	private JPanel contentPane;
 	private JTextField nameTextField;
 	private JTextField passTextField;
@@ -60,7 +61,9 @@ public class Login extends JFrame {
 		JButton loginBtn = new JButton("Ingresar");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(nameTextField.getText().equals("Javascript") && passTextField.getText().equals("123")) {					
+				nombre = nameTextField.getText();
+				
+				if(nombre.equals("Javascript") && passTextField.getText().equals("123")) {					
 					new Menu();
 					dispose();
 				}

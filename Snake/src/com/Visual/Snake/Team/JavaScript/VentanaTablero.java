@@ -1,20 +1,21 @@
 package com.Visual.Snake.Team.JavaScript;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.Snake.Team.JavaScript.Direccion;
 import com.Snake.Team.JavaScript.Posicion;
+import com.Snake.Team.JavaScript.Snake;
 import com.Snake.Team.JavaScript.Tablero;
 
 import java.awt.Color;
@@ -22,8 +23,11 @@ import java.awt.Color;
 public class VentanaTablero extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private DibujoTablero contentPane;
-	private static Tablero tablero = new Tablero(30, 30, 11, 1);
+	private static Snake serpiente;//serpiente del servidor
+	private static DibujoTablero contentPane;
+	private static Tablero tablero;
+	static int largo;
+	static int ancho;
 
 	/**
 	 * Launch the application.
@@ -36,43 +40,59 @@ public class VentanaTablero extends JFrame {
 	 */
 
 	public static void main(String[] args) throws InterruptedException {
-
-		new VentanaTablero();
+		List<String> names = new ArrayList<>();
+		Login.nombre = "Cascote";
+		names.add(Login.nombre);
+		new VentanaTablero(names, 25, 25);
 
 	}
 
-	public VentanaTablero() throws InterruptedException {
+	public VentanaTablero(List<String> nameSnakes, int largo, int ancho) throws InterruptedException {
+		this.largo = largo;
+		this.ancho = ancho;
+		tablero = new Tablero(largo, ancho, 11);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(1000, 1000, 1000, 10000);
 		contentPane = new DibujoTablero();
 		contentPane.setBackground(Color.BLACK);
 		MyKeyListener m = new MyKeyListener();
 		addKeyListener(m);
-		add(contentPane);
+		getContentPane().add(contentPane);
 		contentPane.setLayout(null);
 		contentPane.setVisible(true);
 		setVisible(true);
-		add(contentPane);
+		getContentPane().add(contentPane);
+
 		setLocationRelativeTo(null);
 		setTitle("Snake - JavaScript");
-		tablero.colocarVibora(new Posicion(1, 1), "Juan Vibora");
-		tablero.getSnake(0).cambiarDireccion(Direccion.ABJ);
 
+		for (int i = 0; i < nameSnakes.size(); i++) {
+			tablero.colocarVibora(nameSnakes.get(i));
+			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
+		}
+		
+		serpiente = tablero.getSnake(0);
 		// Game Loop
 		Thread hilo = new Thread(new Runnable() {
 			public void run() {
+				boolean salir = false;
+
 				try {
 					while (true) {
 						MyKeyListener.inicializar();
-						add(contentPane);
+						getContentPane().add(contentPane);
 						TimeUnit.MILLISECONDS.sleep(200);
+						salir = MyKeyListener.escapeKeyPressed();
 
-						if (tablero.getCantidadSnakes() > 0)
+						//reemplazar esto una vez creado servidor cliente
+						if (!salir && tablero.getCantidadSnakes() > 0)
 							for (int i = 0; i < tablero.getCantidadSnakes(); i++)
 								tablero.getSnake(i).moverse();
 						else {
-							JOptionPane.showMessageDialog(null, "Has obtenido un pasaje de ida al cementerio =).");
-							new Menu();
+							if (!salir)
+								JOptionPane.showMessageDialog(null, "Has obtenido un pasaje de ida al cementerio =)." + serpiente.getCantidadDeFruta());
+
+							new NuevaSala();
 							dispose();
 							break;
 						}
@@ -86,17 +106,35 @@ public class VentanaTablero extends JFrame {
 				}
 			}
 		});
+
 		hilo.start();
 	}
 
 	public static class DibujoTablero extends JPanel implements ActionListener {
 
 		private static final long serialVersionUID = 1L;
-		private final int TAM_TABLERO = 30;
-		private final int CUADRO = 25;
+		private final int TAM_TABLERO = VentanaTablero.ancho;
+		private final int CUADRO = VentanaTablero.largo;
 		private final int PARED = 5;
 		private final int SEPARACION = 2;
 
+		private Color changeColor(int color) {
+			switch(color) {
+			case 0:
+				return Color.BLUE;
+			case 1:
+				return Color.MAGENTA;
+			case 2:
+				return Color.ORANGE;
+			case 3:
+				return Color.PINK;
+			case 4:
+				return Color.YELLOW;
+			default:
+				return Color.CYAN;
+			}
+		}
+		
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
@@ -105,36 +143,32 @@ public class VentanaTablero extends JFrame {
 			g.setColor(Color.GREEN);
 
 			for (int j = 0; j < tablero.getCantidadSnakes(); j++) {
+				
 				p = tablero.getSnake(j).getPosicion();
 				g.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
-				
+
 				for (int i = 0; i < tablero.getSnake(j).getLongitud() - 1; i++) {
 					p = tablero.getSnake(j).getCuerpo().get(i).getPosicion();
 					g.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
 							CUADRO - SEPARACION);
 				}
+				
+				g.setColor(changeColor(j));
 			}
+			
 			g.setColor(Color.WHITE);
 
-			g.fillRect(CUADRO - SEPARACION - PARED,
-						CUADRO - SEPARACION - PARED,
-						PARED,
-						(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED); // ARRIBA
+			g.fillRect(CUADRO - SEPARACION - PARED, CUADRO - SEPARACION - PARED, PARED,
+					(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED); // ARRIBA
 
-			g.fillRect(CUADRO - SEPARACION - PARED,
-						(TAM_TABLERO - 1) * CUADRO,
-						(TAM_TABLERO - 2) * CUADRO + SEPARACION + 2 * PARED,
-						PARED); // ABAJO
+			g.fillRect(CUADRO - SEPARACION - PARED, (TAM_TABLERO - 1) * CUADRO,
+					(TAM_TABLERO - 2) * CUADRO + SEPARACION + 2 * PARED, PARED); // ABAJO
 
-			g.fillRect((TAM_TABLERO - 1) * CUADRO,
-						CUADRO - SEPARACION - PARED,
-						PARED,
-						(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED); // 3
+			g.fillRect((TAM_TABLERO - 1) * CUADRO, CUADRO - SEPARACION - PARED, PARED,
+					(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED); // 3
 
-			g.fillRect(CUADRO - SEPARACION - PARED,
-						CUADRO - SEPARACION - PARED,
-						(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED,
-						PARED);// 4
+			g.fillRect(CUADRO - SEPARACION - PARED, CUADRO - SEPARACION - PARED,
+					(TAM_TABLERO - 2) * CUADRO + SEPARACION + PARED, PARED);// 4
 
 			g.setColor(Color.red);
 
@@ -153,15 +187,18 @@ public class VentanaTablero extends JFrame {
 
 	public static class MyKeyListener implements KeyListener {
 		private static boolean TECLA_PRESIONADA;
+		private static boolean TECLA_ESCAPE;
 
 		public static void inicializar() {
 			TECLA_PRESIONADA = false;
+			TECLA_ESCAPE = false;
 		}
 
 		@Override
-
-		public void keyPressed(KeyEvent e) {
-
+		public void keyPressed(KeyEvent e) {	
+			if(!serpiente.getState())
+				return;
+			
 			if (TECLA_PRESIONADA)
 				return;
 
@@ -183,9 +220,18 @@ public class VentanaTablero extends JFrame {
 
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				tablero.getSnake(0).cambiarDireccion(Direccion.DRC);
-				System.out.println("derecha");}
+				System.out.println("derecha");
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				TECLA_ESCAPE = true;
+			}
 
 			TECLA_PRESIONADA = true;
+		}
+
+		public static boolean escapeKeyPressed() {
+			return TECLA_ESCAPE;
 		}
 
 		@Override
