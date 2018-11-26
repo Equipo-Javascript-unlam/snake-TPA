@@ -11,7 +11,7 @@ public class Snake {
 	private Direccion direccion;
 	private String nombreJugador;
 	private int cantidadDeFrutaConsumida;
-	private Dir orientacion;
+	private Direccion orientacion;
 
 	public boolean getState() {
 		return vivo;
@@ -37,16 +37,16 @@ public class Snake {
 		Posicion lastPos = new Posicion(headSnake.posicion), auxPos;
 
 		switch (this.direccion) {
-		case ARB:
+		case arriba:
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() - 1);
 			break;
-		case ABJ:
+		case abajo:
 			headSnake.posicion.setLocation(lastPos.getX(), lastPos.getY() + 1);
 			break;
-		case IZQ:
+		case izquierda:
 			headSnake.posicion.setLocation(lastPos.getX() - 1, lastPos.getY());
 			break;
-		case DRC:
+		case derecha:
 			headSnake.posicion.setLocation(lastPos.getX() + 1, lastPos.getY());
 			break;
 		}
@@ -62,22 +62,22 @@ public class Snake {
 
 	public void cambiarDireccion(Direccion dir) {
 		switch (dir) {
-		case IZQ:
-			setDirection(dir, Direccion.DRC, Dir.izquierda);
+		case izquierda:
+			setDirection(dir, Direccion.derecha, Direccion.izquierda);
 			break;
-		case DRC:
-			setDirection(dir, Direccion.IZQ, Dir.derecha);
+		case derecha:
+			setDirection(dir, Direccion.izquierda, Direccion.derecha);
 			break;
-		case ARB:
-			setDirection(dir, Direccion.ABJ, Dir.arriba);
+		case arriba:
+			setDirection(dir, Direccion.abajo, Direccion.arriba);
 			break;
-		case ABJ:
-			setDirection(dir, Direccion.ARB, Dir.abajo);
+		case abajo:
+			setDirection(dir, Direccion.arriba, Direccion.abajo);
 			break;
 		}
 	}
 
-	private void setDirection(Direccion dir, Direccion opuesto, Dir orientacion) {
+	private void setDirection(Direccion dir, Direccion opuesto, Direccion orientacion) {
 		if (bodySnake.isEmpty() || this.direccion != opuesto) {
 			this.direccion = dir;
 			this.orientacion = orientacion;
@@ -90,20 +90,6 @@ public class Snake {
 				return true;
 
 		return false;
-	}
-
-	enum Dir {
-		izquierda(-1, 0), derecha(1, 0), abajo(0, -1), arriba(0, 1);
-		final int fila, columna;
-
-		Dir(int fila, int columna) {
-			this.fila = fila;
-			this.columna = columna;
-		}
-
-		Posicion sentido() {
-			return new Posicion(this.fila, this.columna);
-		}
 	}
 
 	public void crecer() {

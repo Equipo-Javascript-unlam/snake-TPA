@@ -4,22 +4,30 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.Server.Servidor;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5031213658834160191L;
 	static String nombre;
+	private String pass;
 	private JPanel contentPane;
 	private JTextField nameTextField;
-	private JTextField passTextField;
+	private JPasswordField passTextField;
+	private JButton loginBtn;
+	private JLabel lblNewLabel;
+	private JButton forgotButton;
+	private JLabel passwordTextField;
+	private JButton registerButton;
 
 	/**
 	 * Launch the application.
@@ -48,52 +56,104 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
-		
-		JLabel lblNewLabel = new JLabel("Usuario");
+
+		lblNewLabel = new JLabel("Usuario");
 		lblNewLabel.setBounds(75, 26, 143, 14);
 		contentPane.add(lblNewLabel);
-		
+
 		nameTextField = new JTextField();
 		nameTextField.setBounds(75, 41, 143, 20);
 		contentPane.add(nameTextField);
 		nameTextField.setColumns(10);
-		
-		JButton loginBtn = new JButton("Ingresar");
-		loginBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nombre = nameTextField.getText();
-				
-				if(nombre.equals("Javascript") && passTextField.getText().equals("123")) {					
-					new Menu();
-					dispose();
-				}
-				else {
-					passTextField.setText("");
-					System.out.println("Contraseña o usuario invalido");
-				}
-			}
-		});
-		
+
+		loginBtn = new JButton("Ingresar");
 		loginBtn.setBounds(75, 126, 143, 23);
 		contentPane.add(loginBtn);
-		
-		JLabel passwordTextField = new JLabel("Contraseña");
+
+		passwordTextField = new JLabel("Contraseña");
 		passwordTextField.setBounds(75, 73, 143, 14);
 		contentPane.add(passwordTextField);
-		
-		passTextField = new JTextField();
+
+		passTextField = new JPasswordField();
 		passTextField.setToolTipText("");
 		passTextField.setColumns(10);
 		passTextField.setBounds(75, 88, 143, 20);
 		contentPane.add(passTextField);
-		
-		JButton btnNewButton = new JButton("Olvide la contraseña");
-		btnNewButton.addActionListener(new ActionListener() {
+
+		forgotButton = new JButton("Olvide la contrase\u00F1a");
+		forgotButton.setBounds(137, 193, 157, 29);
+		contentPane.add(forgotButton);
+
+		registerButton = new JButton("Registrarse");
+		registerButton.setBounds(75, 160, 143, 23);
+		contentPane.add(registerButton);
+
+		addListener();
+	}
+
+	private void iniciarSesion() {
+		nombre = nameTextField.getText();
+		pass = String.valueOf(passTextField.getPassword());
+
+		if (nombre.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Ingrese un usuario", "Error login", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		if (pass.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Ingrese la contrase\u00F1a", "Error login",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		// esto es para pruebas, reemplazarlo
+		Servidor sv = new Servidor();
+		int state = sv.buscarUsuario(nombre, pass);
+
+		if (state == 1) {// nombre.equals("Javascript") && pass.equals("123")) {
+			new Menu(nombre);
+			dispose();
+		} else if (state == 0) {
+			passTextField.setText("");
+			JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase\u00F1a incorrectos", "Error login",
+					JOptionPane.WARNING_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "El usuario no existe, registrese", "Error login",
+					JOptionPane.WARNING_MESSAGE);
+		}
+
+	}
+
+	// Aca se capturan las distintas acciones en la ventana
+	private void addListener() {
+		registerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new NuevoUsuario();
+			}
+		});
+
+		passTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				iniciarSesion();
+			}
+		});
+
+		nameTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				iniciarSesion();
+			}
+		});
+
+		loginBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				iniciarSesion();
+			}
+		});
+
+		forgotButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("...");
 			}
 		});
-		btnNewButton.setBounds(137, 193, 157, 29);
-		contentPane.add(btnNewButton);
 	}
 }

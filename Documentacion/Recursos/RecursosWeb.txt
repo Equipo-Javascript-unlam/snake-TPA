@@ -1,0 +1,10 @@
+Listado de recursos y guias para la realizacion de este TP
+
+https://www.youtube.com/watch?v=_SqnzvJuKiA
+http://zetcode.com/tutorials/javagamestutorial/snake/
+https://rosettacode.org/wiki/Snake/Java
+https://parzibyte.me/blog/2018/02/09/sockets-java-chat-cliente-servidor/
+https://programandoointentandolo.com/2013/04/ejemplo-chat-en-java-usando-sockets-e-hilos.html
+http://codigoprogramacion.com/cursos/java/103-sockets-en-java-con-cliente-y-servidor.html#.W_rAU-hKjIU
+https://www.youtube.com/watch?v=l7IDevUUa3A&index=7&list=PLS1QulWo1RIbYMA5Ijb72QHaHvCrPKfS2
+https://www.youtube.com/watch?v=HGPgRdX-AxQ&list=PLS1QulWo1RIbYMA5Ijb72QHaHvCrPKfS2&index=8

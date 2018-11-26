@@ -22,7 +22,7 @@ class TestSnake {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");//Posicion inicial
 		Posicion p = new Posicion(2,1);//posicion esperada
 		
-		s1.cambiarDireccion(Direccion.DRC);
+		s1.cambiarDireccion(Direccion.derecha);
 		s1.moverse();
 		assertEquals(p, s1.getPosicion());		
 	}
@@ -32,10 +32,10 @@ class TestSnake {
 		Snake s1 = new Snake(new Posicion(1,2), "pepe");//Posicion inicial
 		Posicion p = new Posicion(0,3);//posicion esperada
 		
-		s1.cambiarDireccion(Direccion.DRC);
-		s1.cambiarDireccion(Direccion.ABJ);
+		s1.cambiarDireccion(Direccion.derecha);
+		s1.cambiarDireccion(Direccion.abajo);
 		s1.moverse();
-		s1.cambiarDireccion(Direccion.IZQ);
+		s1.cambiarDireccion(Direccion.izquierda);
 		s1.moverse();
 		assertEquals(p, s1.getPosicion());
 	}
@@ -45,8 +45,8 @@ class TestSnake {
 		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
 		Posicion p = new Posicion(2,3);//posicion esperada
 		
-		s1.cambiarDireccion(Direccion.DRC);
-		s1.cambiarDireccion(Direccion.IZQ);
+		s1.cambiarDireccion(Direccion.derecha);
+		s1.cambiarDireccion(Direccion.izquierda);
 		s1.moverse();
 		assertEquals(p, s1.getPosicion());
 	}
@@ -56,9 +56,9 @@ class TestSnake {
 		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
 		Posicion p = new Posicion(4,3);//posicion esperada
 		
-		s1.cambiarDireccion(Direccion.DRC);
+		s1.cambiarDireccion(Direccion.derecha);
 		s1.crecer();
-		s1.cambiarDireccion(Direccion.IZQ);
+		s1.cambiarDireccion(Direccion.izquierda);
 		s1.moverse();
 		assertEquals(p, s1.getPosicion());
 	}
@@ -69,8 +69,8 @@ class TestSnake {
 		t.colocarVibora(new Posicion(1,1), "cabeza1");
 		t.colocarVibora(new Posicion(1,3), "cabeza2");
 		
-		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
-		t.serpientes.get(1).cambiarDireccion(Direccion.IZQ);
+		t.serpientes.get(0).cambiarDireccion(Direccion.derecha);
+		t.serpientes.get(1).cambiarDireccion(Direccion.izquierda);
 		t.serpientes.get(0).moverse();
 		t.serpientes.get(1).moverse();
 		t.colision();
@@ -81,7 +81,7 @@ class TestSnake {
 		Tablero t = new Tablero(5, 5, 5);
 		
 		t.colocarVibora(new Posicion(1,1), "pepe");
-		t.serpientes.get(0).cambiarDireccion(Direccion.IZQ);
+		t.serpientes.get(0).cambiarDireccion(Direccion.izquierda);
 		t.serpientes.get(0).moverse();
 		t.colision();//mostrar mensaje de chocar contra pared
 	}
@@ -91,7 +91,7 @@ class TestSnake {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");
 		Fruta fruta = new Fruta(new Posicion(1,2));
 		
-		s1.cambiarDireccion(Direccion.DRC);
+		s1.cambiarDireccion(Direccion.derecha);
 		s1.moverse();
 		s1.comerConsumible(fruta);
 		
@@ -104,15 +104,15 @@ class TestSnake {
 		
 		t.colocarVibora(new Posicion(4,3), "Aldo");
 		
-		t.serpientes.get(0).cambiarDireccion(Direccion.DRC);
+		t.serpientes.get(0).cambiarDireccion(Direccion.derecha);
 		t.serpientes.get(0).crecer();
 		t.serpientes.get(0).crecer();
 		t.serpientes.get(0).crecer();
-		t.serpientes.get(0).cambiarDireccion(Direccion.ABJ);
+		t.serpientes.get(0).cambiarDireccion(Direccion.abajo);
 		t.serpientes.get(0).moverse();
-		t.serpientes.get(0).cambiarDireccion(Direccion.IZQ);
+		t.serpientes.get(0).cambiarDireccion(Direccion.izquierda);
 		t.serpientes.get(0).moverse();
-		t.serpientes.get(0).cambiarDireccion(Direccion.ARB);
+		t.serpientes.get(0).cambiarDireccion(Direccion.arriba);
 		t.serpientes.get(0).moverse();
 		t.colision();
 	}
