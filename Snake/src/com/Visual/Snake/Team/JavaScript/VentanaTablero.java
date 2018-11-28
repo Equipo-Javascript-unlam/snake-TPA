@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import com.Snake.Team.JavaScript.Direccion;
 import com.Snake.Team.JavaScript.Posicion;
 import com.Snake.Team.JavaScript.Snake;
+import com.Snake.Team.JavaScript.SnakeIA;
 import com.Snake.Team.JavaScript.Tablero;
 
 import java.awt.Color;
@@ -83,12 +84,14 @@ public class VentanaTablero extends JFrame {
 		setLocationRelativeTo(null);
 		setTitle("Snake - JavaScript");
 
+
 		for (int i = 0; i < nameSnakes.size(); i++) {
 			tablero.colocarVibora(nameSnakes.get(i));
 			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
 			tablero.getSnake(i).setColor(changeColor(i));
 		}
-
+		
+		
 		serpiente = tablero.getSnake(0);
 		// Game Loop
 		Thread hilo = new Thread(new Runnable() {
@@ -103,9 +106,11 @@ public class VentanaTablero extends JFrame {
 						salir = MyKeyListener.escapeKeyPressed();
 
 						// reemplazar esto una vez creado servidor cliente
-						if (!salir && tablero.getCantidadSnakes() > 0)
+						if (!salir && tablero.getCantidadSnakes() > 0){
 							for (int i = 0; i < tablero.getCantidadSnakes(); i++)
 								tablero.getSnake(i).moverse();
+							}
+							
 						else {
 							if (!salir)
 								JOptionPane.showMessageDialog(null,
@@ -116,7 +121,7 @@ public class VentanaTablero extends JFrame {
 							dispose();
 							break;
 						}
-
+						
 						tablero.colision();
 						contentPane.repaint();
 						repaint();

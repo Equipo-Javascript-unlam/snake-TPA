@@ -109,6 +109,10 @@ public class Tablero {
 	public void colocarVibora(Posicion pos, String nom) {
 		serpientes.add(new Snake(pos, nom));
 	}
+	
+	public void colocarVibora(Snake s) {   //METODO DE PRUEBA
+		serpientes.add(s);
+	}
 
 	public void colocarVibora(String nom) {
 		serpientes.add(new Snake(generarPosicion(), nom));
@@ -241,5 +245,10 @@ public class Tablero {
 
 	public int getCantidadSnakes() {
 		return this.serpientes.size();
+	}
+	
+	public boolean hayPared(Posicion pos)
+	{
+		return this.tablero[(int)pos.getX()][(int)pos.getY()]==PARED;
 	}
 }

@@ -14,17 +14,38 @@ public enum Direccion {
 	}
 	
 	public static Direccion getDirRand() {
-		int i = (int) (Math.random() * 4) + 1;
-				
+		return numToDir((int)Math.random() * 4);
+		
+	}
+	
+	public static Direccion numToDir(int i)
+	{
+		
 		switch(i) {
-		case 1:
+		case 0:
 			return arriba;
-		case 2:
+		case 1:
 			return abajo;
-		case 3:
+		case 2:
 			return izquierda;
 		default:
 			return derecha;
+		}
+	}
+	
+	public static boolean esOpuesto(Direccion d1, Direccion d2)
+	{
+		switch (d1)
+		{
+		case izquierda:
+			return d2==derecha;
+		case derecha:
+			return d2==izquierda;
+		case arriba:
+			return d2==abajo;
+		default:
+			return d2==arriba;
+		
 		}
 	}
 }

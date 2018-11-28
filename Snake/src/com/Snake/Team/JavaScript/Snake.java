@@ -151,6 +151,11 @@ public class Snake {
 	public int getLongitud() {
 		return bodySnake.size() + 1;
 	}
+	
+	public Direccion getDireccion()
+	{
+		return this.direccion;
+	}
 
 	public class BodySnake {
 		private Posicion posicion;
