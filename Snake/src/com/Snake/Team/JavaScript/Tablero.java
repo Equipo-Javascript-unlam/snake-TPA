@@ -3,6 +3,7 @@ package com.Snake.Team.JavaScript;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import com.Snake.Team.JavaScript.Snake.BodySnake;
 
@@ -24,13 +25,13 @@ public class Tablero {
 		powerUps = new ArrayList<>();
 		inicializarTablero();
 
-		// for(int i = 0; i < cantidadDeFrutas; i ++) {
-		colocarFrutas();
-		// }
-		// solo se agregan 2 para probar
-		for (int i = 0; i < 2; i++) {
-			colocarPowerUp();
+		for (int i = 0; i < 30; i++) {
+			colocarFrutas();
 		}
+		// solo se agregan 2 para probar
+		/*
+		 * for (int i = 0; i < 2; i++) { colocarPowerUp(); }
+		 */
 	}
 
 	private void inicializarTablero() {
@@ -42,6 +43,17 @@ public class Tablero {
 					tablero[f][c] = PARED;
 			}
 		}
+	}
+
+	private boolean hayObjetoEnMapa(Posicion pos) {
+		int x = (int) pos.getX();
+		int y = (int) pos.getY();
+		boolean hayObjeto = hayCuerpo(x, y);
+
+		if (!hayObjeto)
+			hayObjeto = (tablero[x][y] == IDFRUTA || tablero[x][y] == IDPU) ? true : false;
+
+		return hayObjeto;
 	}
 
 	private boolean hayCuerpo(int f, int c) {
@@ -104,6 +116,10 @@ public class Tablero {
 
 	public void colocarFrutas() {
 		Posicion pos = generarPosicion();
+
+		while (hayObjetoEnMapa(pos))
+			pos = generarPosicion();
+
 		frutas.add(new Fruta(pos));
 		tablero[(int) pos.getX()][(int) pos.getY()] = IDFRUTA;
 	}
@@ -117,9 +133,55 @@ public class Tablero {
 	public void colision() {
 		int fila, columna;
 		Iterator<Snake> it = serpientes.iterator();
+		
+		//este for es para probar, despues se vera si se borra
+		for(Snake s : serpientes) {
+			fila = (int) s.getPosicion().getX();
+			columna = (int) s.getPosicion().getY();
 
-		// for(Snake s : serpientes) {
-		while (it.hasNext()) {
+			if (tablero[fila][columna] == PARED || s.comeSuCuerpo()) {
+				s.morir();
+			}
+
+			if (tablero[fila][columna] == IDFRUTA) {
+				tablero[fila][columna] = 0;
+				int i = buscarFruta(fila, columna);
+				s.comerConsumible(frutas.get(i));
+				frutas.remove(i);
+				colocarFrutas();
+			}
+
+			if (tablero[fila][columna] == IDPU) {
+				tablero[fila][columna] = 0;
+				int i = buscarPowerUp(fila, columna);
+				s.comerConsumible(powerUps.get(i));
+				powerUps.remove(i);
+			}
+
+			for (Snake s1 : serpientes) {
+				if (!s.equals(s1)) {
+					if (s.getPosicion().equals(s1.getPosicion())) { // head to head
+						s.morir();
+						s1.morir();
+					} else { // head to boody
+						ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
+
+						for (BodySnake body : bodyS1) {
+							if (s.getPosicion().equals(body.getPosicion())) {
+								s.morir();
+								break;
+							}
+						}
+					}
+				}
+			} // fin for(Snake s1 : serpientes)
+		}
+
+		for(int i = 0; i < serpientes.size(); i ++) {
+			if(!serpientes.get(i).getState())
+				serpientes.remove(i);
+		}
+		/*while (it.hasNext()) {
 			Snake s = it.next();
 			fila = (int) s.getPosicion().getX();
 			columna = (int) s.getPosicion().getY();
@@ -145,22 +207,24 @@ public class Tablero {
 			}
 
 			for (Snake s1 : serpientes) {
-				if (!s.equals(s1) && s.getPosicion().equals(s1.getPosicion())) { // head to head
-					s.morir();
-					s1.morir();
-					it.remove();
+				if (!s.equals(s1)) {
+					if (s.getPosicion().equals(s1.getPosicion())) { // head to head
+						s.morir();
+						s1.morir();
+						it.remove();
+					} else { // head to boody
+						ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
 
-				} else { // head to boody
-					ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
-					for (BodySnake body : bodyS1) {
-						if (s.getPosicion().equals(body.getPosicion())) {
-							s.morir();
-							break;
+						for (BodySnake body : bodyS1) {
+							if (s.getPosicion().equals(body.getPosicion())) {
+								s.morir();
+								break;
+							}
 						}
 					}
 				}
-			}
-		}
+			} // fin for(Snake s1 : serpientes)
+		}//*/
 	}
 
 	public Snake getSnake(int i) {

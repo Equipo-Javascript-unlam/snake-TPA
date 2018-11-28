@@ -21,8 +21,7 @@ import com.Snake.Team.JavaScript.Tablero;
 import java.awt.Color;
 
 public class VentanaTablero extends JFrame {
-
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4392485967342779458L;
 	private static Snake serpiente;// serpiente del servidor
 	private static DibujoTablero contentPane;
 	private static Tablero tablero;
@@ -44,7 +43,25 @@ public class VentanaTablero extends JFrame {
 		Login.nombre = "Cascote";
 		names.add(Login.nombre);
 		new VentanaTablero(names, 25, 25);
+	}
 
+	private Color changeColor(int color) {
+		switch (color) {
+		case 0:
+			return Color.GREEN;
+		case 1:
+			return Color.MAGENTA;
+		case 2:
+			return Color.ORANGE;
+		case 3:
+			return Color.PINK;
+		case 4:
+			return Color.YELLOW;
+		case 5:
+			return Color.BLUE;
+		default:
+			return Color.CYAN;
+		}
 	}
 
 	public VentanaTablero(List<String> nameSnakes, int largo, int ancho) throws InterruptedException {
@@ -69,6 +86,7 @@ public class VentanaTablero extends JFrame {
 		for (int i = 0; i < nameSnakes.size(); i++) {
 			tablero.colocarVibora(nameSnakes.get(i));
 			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
+			tablero.getSnake(i).setColor(changeColor(i));
 		}
 
 		serpiente = tablero.getSnake(0);
@@ -90,8 +108,9 @@ public class VentanaTablero extends JFrame {
 								tablero.getSnake(i).moverse();
 						else {
 							if (!salir)
-								JOptionPane.showMessageDialog(null, "Has obtenido un pasaje de ida al cementerio =)."
-										+ serpiente.getCantidadDeFruta());
+								JOptionPane.showMessageDialog(null,
+										"Has obtenido un pasaje de ida al cementerio =).\nPuntaje:"
+												+ serpiente.getCantidadDeFruta());
 
 							new NuevaSala();
 							dispose();
@@ -119,32 +138,14 @@ public class VentanaTablero extends JFrame {
 		private final int PARED = 5;
 		private final int SEPARACION = 2;
 
-		private Color changeColor(int color) {
-			switch (color) {
-			case 0:
-				return Color.BLUE;
-			case 1:
-				return Color.MAGENTA;
-			case 2:
-				return Color.ORANGE;
-			case 3:
-				return Color.PINK;
-			case 4:
-				return Color.YELLOW;
-			default:
-				return Color.CYAN;
-			}
-		}
-
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
 			this.setBackground(Color.BLACK);
 			Posicion p;
-			g.setColor(Color.GREEN);
 
 			for (int j = 0; j < tablero.getCantidadSnakes(); j++) {
-
+				g.setColor(tablero.getSnake(j).getColor());
 				p = tablero.getSnake(j).getPosicion();
 				g.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
 
@@ -153,8 +154,6 @@ public class VentanaTablero extends JFrame {
 					g.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
 							CUADRO - SEPARACION);
 				}
-
-				g.setColor(changeColor(j));
 			}
 
 			g.setColor(Color.WHITE);
@@ -181,7 +180,6 @@ public class VentanaTablero extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 	}
@@ -237,15 +235,11 @@ public class VentanaTablero extends JFrame {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// System.out.println("b");
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// System.out.println("c");
-			// TODO Auto-generated method stub
 
 		}
 	}

@@ -18,7 +18,7 @@ public class Posicion extends Point2D {
 
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
+		
 		return this.x;
 	}
 

@@ -58,8 +58,8 @@ public class Cliente {
 
 	public static void main(String[] args) {
 
-		Connection conn = SqliteConection.dbConector();
-//		Cliente c = new Cliente();
-//		c.recibirMensajesServidor();
+	//	Connection conn = SqliteConection.dbConector();
+		Cliente c = new Cliente();
+		c.recibirMensajesServidor();
 	}
 }

@@ -32,7 +32,8 @@ public class Servidor {
 			// Bucle infinito para esperar conexiones
 			while (true) {
 				socket = servidor.accept();
-
+				
+				System.out.println("cliente conectado");
 				ConexionCliente cc = new ConexionCliente(socket);
 				cc.start();
 

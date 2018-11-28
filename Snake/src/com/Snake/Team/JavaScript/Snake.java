@@ -1,5 +1,6 @@
 package com.Snake.Team.JavaScript;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import com.Snake.Team.JavaScript.Consumible.tipoConsumible;
@@ -12,6 +13,15 @@ public class Snake {
 	private String nombreJugador;
 	private int cantidadDeFrutaConsumida;
 	private Direccion orientacion;
+	private Color color;
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	public boolean getState() {
 		return vivo;
@@ -54,8 +64,8 @@ public class Snake {
 		if (!bodySnake.isEmpty()) {
 			for (BodySnake nodo : bodySnake) {
 				auxPos = new Posicion(nodo.posicion);
-				nodo.posicion = new Posicion(lastPos);
-				lastPos = new Posicion(auxPos);
+				nodo.posicion.setLocation(lastPos);// = new Posicion(lastPos);
+				lastPos.setLocation(auxPos);// = new Posicion(auxPos);
 			}
 		}
 	}
