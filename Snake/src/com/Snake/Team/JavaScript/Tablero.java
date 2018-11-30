@@ -1,10 +1,7 @@
 package com.Snake.Team.JavaScript;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import com.Snake.Team.JavaScript.Snake.BodySnake;
 
 public class Tablero {
@@ -102,8 +99,8 @@ public class Tablero {
 	public void colocarVibora(Posicion pos, String nom) {
 		serpientes.add(new Snake(pos, nom));
 	}
-	
-	public void colocarVibora(Snake snake) {   //METODO DE PRUEBA
+
+	public void colocarVibora(Snake snake) { // METODO DE PRUEBA
 		serpientes.add(snake);
 	}
 
@@ -130,14 +127,13 @@ public class Tablero {
 	public void colision() {
 		int fila, columna;
 
-		
-		//este for es para probar, despues se vera si se borra
+		// este for es para probar, despues se vera si se borra
 		try {
-			for(Snake s : serpientes) {	
+			for (Snake s : serpientes) {
 				int i;
 				fila = (int) s.getPosicion().getX();
 				columna = (int) s.getPosicion().getY();
-				
+
 				switch (tablero[fila][columna]) {
 				case IDFRUTA:
 					tablero[fila][columna] = 0;
@@ -146,7 +142,7 @@ public class Tablero {
 					frutas.remove(i);
 					colocarFrutas();
 					break;
-				case IDPU:	
+				case IDPU:
 					tablero[fila][columna] = 0;
 					int j = buscarPowerUp(fila, columna);
 					s.comerConsumible(powerUps.get(j));
@@ -156,32 +152,37 @@ public class Tablero {
 					s.morir();
 					break;
 				}
-				
-				for (Snake s1 : serpientes) {
-					if (s.getPosicion().equals(s1.getPosicion()) && !s.equals(s1)) { // head to head
-						s.morir();
-					} else { // head to boody
-						ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
 
-						for (BodySnake body : bodyS1) {
-							if (s.getPosicion().equals(body.getPosicion())) {
-								s.morir();
-								break;
+				if (serpientes.size() > 1) {
+					for (Snake s1 : serpientes) {
+						if (s.getPosicion().equals(s1.getPosicion()) && !s.equals(s1)) { // head to head
+							s.morir();
+						} else { // head to boody
+							ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
+
+							for (BodySnake body : bodyS1) {
+								if (s.getPosicion().equals(body.getPosicion())) {
+									s.morir();
+									break;
+								}
 							}
 						}
-					}
-				} // fin for(Snake s1 : serpientes)
+					} // fin for(Snake s1 : serpientes)
+				}
+				
+				if(hayCuerpo(fila, columna))
+					s.morir();
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {
 			ex.printStackTrace();
 		}
 
-		for(int i=0; i < serpientes.size(); i++) {
+		for (int i = 0; i < serpientes.size(); i++) {
 			Snake snake = serpientes.get(i);
-			if(!snake.getState()) {
+			if (!snake.getState()) {
 				serpientes.remove(snake);
 				i--;
-			}	
+			}
 		}
 	}
 
@@ -200,8 +201,8 @@ public class Tablero {
 	public int getCantidadSnakes() {
 		return this.serpientes.size();
 	}
-	
+
 	public boolean hayPared(Posicion pos) {
-		return this.tablero[(int)pos.getX()][(int)pos.getY()] == PARED;
+		return this.tablero[(int) pos.getX()][(int) pos.getY()] == PARED;
 	}
 }

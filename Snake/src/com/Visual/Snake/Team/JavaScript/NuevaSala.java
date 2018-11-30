@@ -108,7 +108,7 @@ public class NuevaSala extends JFrame {
 				else
 					nombres.add("Snake" + i);
 			}
-			new VentanaTablero(nombres, LARGO, ANCHO);
+			new VentanaTablero(nombres, LARGO, ANCHO, comboBoxCantSnakes.getSelectedIndex());
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

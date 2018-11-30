@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class SnakeIA extends Snake {
 
 	public SnakeIA() {
-		super(new Posicion(7, 7), "Cerebro");//Jesus-Kippke
+		super(new Posicion(7, 7), "Cerebro");// Jesus-Kippke
 	}
 
 	public Direccion getDireccionIA(Tablero tablero) {
@@ -13,10 +13,12 @@ public class SnakeIA extends Snake {
 		Posicion move, fruta = getPosicionFrutaCercana(tablero);
 		ArrayList<Direccion> direccionesPosibles = new ArrayList<Direccion>();
 		boolean posicionPosible = true;
+
 		for (int i = 0; i < 4; i++) // Una por cada posicion posible
 		{
 			dir = Direccion.numToDir(i);
 			move = move(getPosicion(), dir);
+			
 			if (!tablero.hayPared(move) && !Direccion.esOpuesto(dir, getDireccion())) {
 				for (int j = 0; j < tablero.getCantidadSnakes() && posicionPosible; j++) {
 					posicionPosible = !move.equals(tablero.getSnake(j).getPosicion());
@@ -61,6 +63,7 @@ public class SnakeIA extends Snake {
 		}
 		return false;
 	}
+
 	public Posicion move(Posicion pos, Direccion dir) {
 		switch (dir) {
 		case arriba:

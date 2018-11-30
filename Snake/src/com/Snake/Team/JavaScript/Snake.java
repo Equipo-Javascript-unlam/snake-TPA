@@ -3,8 +3,6 @@ package com.Snake.Team.JavaScript;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import com.Snake.Team.JavaScript.Consumible.tipoConsumible;
-
 public class Snake {
 	private boolean vivo;
 	private HeadSnake headSnake;

@@ -39,7 +39,7 @@ public class VentanaTablero extends JFrame {
 					List<String> names = new ArrayList<>();
 					Login.nombre = "Test";
 					names.add(Login.nombre);
-					VentanaTablero frame = new VentanaTablero(names, 25, 25);
+					VentanaTablero frame = new VentanaTablero(names, 25, 25, 2);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,7 +67,7 @@ public class VentanaTablero extends JFrame {
 		}
 	}
 
-	public VentanaTablero(List<String> nameSnakes, int largo, int ancho) throws InterruptedException {
+	public VentanaTablero(List<String> nameSnakes, int largo, int ancho, int cantidadSerpientes) throws InterruptedException {
 		VentanaTablero.largo = largo;
 		VentanaTablero.ancho = ancho;
 		tablero = new Tablero(largo, ancho, 11);
@@ -91,6 +91,7 @@ public class VentanaTablero extends JFrame {
 		listPlayers.setBounds(650, 20, 300, 500);
 		listPlayers.setFocusable(false);
 		listPlayers.setFont(getFont().deriveFont(Font.BOLD, 20));
+		
 		for(String nombreJugador: nameSnakes) {
 			listPlayers.add(nombreJugador);
 		}
@@ -103,6 +104,9 @@ public class VentanaTablero extends JFrame {
 			tablero.getSnake(i).setColor(changeColor(i));
 		}
 		
+		if(nameSnakes.size() < cantidadSerpientes) {
+			
+		}
 		
 		serpiente = tablero.getSnake(0);
 		// Game Loop
