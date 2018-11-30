@@ -117,11 +117,11 @@ public class VentanaTablero extends JFrame {
 										"Has obtenido un pasaje de ida al cementerio =).\nPuntaje:"
 												+ serpiente.getCantidadDeFruta());
 
-							new NuevaSala();
+							new NuevaSala(serpiente.getNombreJugador());
 							dispose();
 							break;
 						}
-						
+						//tablero = dataDelServer
 						tablero.colision();
 						contentPane.repaint();
 						repaint();

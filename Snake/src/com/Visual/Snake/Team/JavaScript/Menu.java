@@ -17,6 +17,7 @@ public class Menu extends JFrame {
 	private JPanel contentPane;
 	private JTable tablePartidas;
 	private JButton btnCrearSala;
+	private JButton btnSalir;
 	private JButton btnUnirse;
 	private JButton puntajeButton;
 	private String nombre;
@@ -28,7 +29,7 @@ public class Menu extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu frame = new Menu("asd");
+					Menu frame = new Menu("Test");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,30 +45,34 @@ public class Menu extends JFrame {
 		this.nombre = nombre;
 		setTitle("Lista de Salas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 457, 363);
+		setBounds(100, 100, 480, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+		contentPane.setLayout(null);
 
 		btnCrearSala = new JButton("Nueva Sala ");
-		btnCrearSala.setBounds(321, 290, 110, 23);
+		btnCrearSala.setBounds(324, 308, 150, 23);
 		contentPane.add(btnCrearSala);
 
 		tablePartidas = new JTable();
+		tablePartidas.setBounds(10, 10, 460, 285);
 		tablePartidas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tablePartidas.setBounds(10, 11, 421, 257);
 		contentPane.add(tablePartidas);
 
 		btnUnirse = new JButton("Unirse");
+		btnUnirse.setBounds(10, 308, 150, 23);
 		btnUnirse.setEnabled(false);
-		btnUnirse.setBounds(10, 290, 89, 23);
 		contentPane.add(btnUnirse);
 		
 		puntajeButton = new JButton("Puntaje");
-		puntajeButton.setBounds(167, 290, 89, 23);
+		puntajeButton.setBounds(168, 308, 150, 23);
 		contentPane.add(puntajeButton);
+		
+		btnSalir = new JButton("Salir");
+		btnSalir.setBounds(10, 343, 464, 29);
+		contentPane.add(btnSalir);
 		setVisible(true);
 		addListener();
 	}
@@ -81,7 +86,7 @@ public class Menu extends JFrame {
 		
 		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new NuevaSala();
+				new NuevaSala(nombre);
 				dispose();
 			}
 		});
@@ -90,6 +95,12 @@ public class Menu extends JFrame {
 
 			public void actionPerformed(ActionEvent arg0) {
 
+			}
+		});
+		
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 	}

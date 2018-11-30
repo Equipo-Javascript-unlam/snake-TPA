@@ -105,10 +105,8 @@ public class Servidor {
 			rs.close();
 			pst.close();
 			
-			if (res > 0)
-				return 1;
-			else
-				return 0;
+				return res > 0 ? 1 : 0;
+
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 			return 0;

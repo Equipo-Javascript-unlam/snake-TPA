@@ -64,8 +64,8 @@ public class Snake {
 		if (!bodySnake.isEmpty()) {
 			for (BodySnake nodo : bodySnake) {
 				auxPos = new Posicion(nodo.posicion);
-				nodo.posicion.setLocation(lastPos);// = new Posicion(lastPos);
-				lastPos.setLocation(auxPos);// = new Posicion(auxPos);
+				nodo.posicion.setLocation(lastPos);
+				lastPos.setLocation(auxPos);
 			}
 		}
 	}
@@ -106,14 +106,12 @@ public class Snake {
 		Posicion pos;
 		BodySnake nuevaParte;
 
-		if (bodySnake.isEmpty())
+		if (bodySnake.isEmpty()) {
 			pos = headSnake.posicion.sumar(orientacion.sentido());
-
-		else {
-
-			if (bodySnake.size() == 1)
+		} else {
+			if (bodySnake.size() == 1) {
 				pos = bodySnake.get(bodySnake.size() - 1).posicion.sumar(orientacion.sentido());
-			else {
+			} else {
 				pos = bodySnake.get(bodySnake.size() - 1).posicion;
 				pos = pos.sumar(pos);
 				pos = pos.restar(bodySnake.get(bodySnake.size() - 2).posicion);
@@ -130,13 +128,14 @@ public class Snake {
 	}
 
 	public void comerConsumible(Consumible comida) {
-		if (comida.queEs() == tipoConsumible.FRUTA) {
+		switch (comida.queEs()) {
+		case FRUTA :
 			cantidadDeFrutaConsumida++;
 			crecer();
-		}
-
-		if (comida.queEs() == tipoConsumible.POWERUP) {
-			System.out.println("comiste un poder");
+			break;
+		case POWERUP :
+			// TO DO
+			break;
 		}
 	}
 
@@ -152,8 +151,7 @@ public class Snake {
 		return bodySnake.size() + 1;
 	}
 	
-	public Direccion getDireccion()
-	{
+	public Direccion getDireccion() {
 		return this.direccion;
 	}
 

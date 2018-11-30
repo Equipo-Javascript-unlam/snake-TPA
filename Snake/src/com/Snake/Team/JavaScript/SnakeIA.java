@@ -1,4 +1,3 @@
-
 package com.Snake.Team.JavaScript;
 
 import java.util.ArrayList;
@@ -6,7 +5,7 @@ import java.util.ArrayList;
 public class SnakeIA extends Snake {
 
 	public SnakeIA() {
-		super(new Posicion(7, 7), "Cerebro");
+		super(new Posicion(7, 7), "Cerebro");//Jesus-Kippke
 	}
 
 	public Direccion getDireccionIA(Tablero tablero) {
@@ -28,7 +27,6 @@ public class SnakeIA extends Snake {
 					direccionesPosibles.add(dir);
 				posicionPosible = true;
 			}
-
 		}
 
 		if (getPosicion().getX() != fruta.getX()) {

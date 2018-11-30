@@ -18,13 +18,11 @@ public class Posicion extends Point2D {
 
 	@Override
 	public double getX() {
-		
 		return this.x;
 	}
 
 	@Override
 	public double getY() {
-
 		return this.y;
 	}
 
@@ -37,7 +35,6 @@ public class Posicion extends Point2D {
 	public void setLocation(double x, double y) {
 		this.x = x;
 		this.y = y;
-
 	}
 
 	public void copy(Posicion p) {

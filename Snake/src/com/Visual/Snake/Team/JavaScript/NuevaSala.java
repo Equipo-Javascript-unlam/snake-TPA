@@ -19,12 +19,14 @@ import javax.swing.DefaultComboBoxModel;
 public class NuevaSala extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private final int LARGO = 25;
+	private final int ANCHO = 25;
 	private JPanel contentPane;
 	private JButton btnIniciar;
 	private JButton cancelarButton;
 	private JComboBox<?> comboBoxCantSnakes;
-	private JComboBox<?> tamMapComboBox;
 	private java.awt.List listPlayers;
+	private String nombreJugador;
 
 	/**
 	 * Launch the application.
@@ -35,7 +37,7 @@ public class NuevaSala extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NuevaSala frame = new NuevaSala();
+					NuevaSala frame = new NuevaSala("Test");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +49,8 @@ public class NuevaSala extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NuevaSala() {
+	public NuevaSala(String nombreJugador) {
+		this.nombreJugador = nombreJugador;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 536, 400);
 		contentPane = new JPanel();
@@ -69,25 +72,15 @@ public class NuevaSala extends JFrame {
 		contentPane.add(lblListaDeJugadores);
 
 		JLabel lblCantidadDeSerpientes = new JLabel("Cantidad de serpientes");
-		lblCantidadDeSerpientes.setBounds(291, 45, 139, 14);
+		lblCantidadDeSerpientes.setBounds(291, 45, 155, 14);
 		contentPane.add(lblCantidadDeSerpientes);
 
 		comboBoxCantSnakes = new JComboBox();
 		comboBoxCantSnakes.setModel(new DefaultComboBoxModel(
 				new String[] { "2 SERPIENTES", "3 SERPIENTES", "4 SERPIENTES", "5 SERPIENTES", "6 SERPIENTES" }));
 		comboBoxCantSnakes.setSelectedIndex(0);
-		comboBoxCantSnakes.setBounds(280, 70, 132, 20);
+		comboBoxCantSnakes.setBounds(280, 70, 166, 20);
 		contentPane.add(comboBoxCantSnakes);
-
-		JLabel lblTamaoDelMapa = new JLabel("Tama\u00F1o del mapa");
-		lblTamaoDelMapa.setBounds(284, 124, 114, 14);
-		contentPane.add(lblTamaoDelMapa);
-
-		tamMapComboBox = new JComboBox();
-		tamMapComboBox.setModel(new DefaultComboBoxModel(new String[] { "20 X 20", "25 X 25", "MAX" }));
-		tamMapComboBox.setSelectedIndex(0);
-		tamMapComboBox.setBounds(276, 147, 136, 20);
-		contentPane.add(tamMapComboBox);
 
 		// Iniciar la partida
 		btnIniciar = new JButton("Iniciar");
@@ -113,27 +106,16 @@ public class NuevaSala extends JFrame {
 						else
 							nombres.add("Snake" + i);
 					}
-
-					int largo = 20, ancho = 20;
-
-					switch (tamMapComboBox.getSelectedIndex()) {
-					case 0:
-						largo = 20;
-						ancho = 20;
-						break;
-					case 1:
-						largo = 25;
-						ancho = 25;
-						break;
-					case 2:
-						largo = 27;
-						ancho = 27;
-						break;
-					}
-					new VentanaTablero(nombres, largo, ancho);
+					new VentanaTablero(nombres, LARGO, ANCHO);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+				dispose();
+			}
+		});
+		cancelarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Menu(nombreJugador);
 				dispose();
 			}
 		});

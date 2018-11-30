@@ -15,12 +15,10 @@ public enum Direccion {
 	
 	public static Direccion getDirRand() {
 		return numToDir((int)Math.random() * 4);
-		
 	}
 	
 	public static Direccion numToDir(int i)
 	{
-		
 		switch(i) {
 		case 0:
 			return arriba;

@@ -25,13 +25,8 @@ public class Tablero {
 		powerUps = new ArrayList<>();
 		inicializarTablero();
 
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 30; i++)
 			colocarFrutas();
-		}
-		// solo se agregan 2 para probar
-		/*
-		 * for (int i = 0; i < 2; i++) { colocarPowerUp(); }
-		 */
 	}
 
 	private void inicializarTablero() {
@@ -77,9 +72,7 @@ public class Tablero {
 			fil = (int) (Math.random() * (this.columnas - 1)) + 1;
 		}
 
-		Posicion pos = new Posicion(fil, col);
-
-		return pos;
+		return new Posicion(fil, col);
 	}
 
 	private int buscarFruta(int f, int c) {
@@ -140,27 +133,38 @@ public class Tablero {
 		
 		//este for es para probar, despues se vera si se borra
 		for(Snake s : serpientes) {
-			fila = (int) s.getPosicion().getX();
-			columna = (int) s.getPosicion().getY();
-
-			if (tablero[fila][columna] == PARED || s.comeSuCuerpo()) {
+			try {
+				if (s.comeSuCuerpo()) {
+					s.morir();
+					break;
+				}
+				
+				int i;
+				fila = (int) s.getPosicion().getX();
+				columna = (int) s.getPosicion().getY();
+				switch (tablero[fila][columna]) {
+				case IDFRUTA:
+					tablero[fila][columna] = 0;
+					i = buscarFruta(fila, columna);
+					s.comerConsumible(frutas.get(i));
+					frutas.remove(i);
+					colocarFrutas();
+					break;
+				case IDPU:	
+					tablero[fila][columna] = 0;
+					int j = buscarPowerUp(fila, columna);
+					s.comerConsumible(powerUps.get(j));
+					powerUps.remove(j);
+					break;
+				case PARED:
+					s.morir();
+				}
+			} catch (ArrayIndexOutOfBoundsException ex) {
 				s.morir();
 			}
-
-			if (tablero[fila][columna] == IDFRUTA) {
-				tablero[fila][columna] = 0;
-				int i = buscarFruta(fila, columna);
-				s.comerConsumible(frutas.get(i));
-				frutas.remove(i);
-				colocarFrutas();
-			}
-
-			if (tablero[fila][columna] == IDPU) {
-				tablero[fila][columna] = 0;
-				int i = buscarPowerUp(fila, columna);
-				s.comerConsumible(powerUps.get(i));
-				powerUps.remove(i);
-			}
+			
+			
+			
 
 			for (Snake s1 : serpientes) {
 				if (!s.equals(s1)) {
@@ -185,50 +189,6 @@ public class Tablero {
 			if(!serpientes.get(i).getState())
 				serpientes.remove(i);
 		}
-		/*while (it.hasNext()) {
-			Snake s = it.next();
-			fila = (int) s.getPosicion().getX();
-			columna = (int) s.getPosicion().getY();
-
-			if (tablero[fila][columna] == PARED || s.comeSuCuerpo()) {
-				s.morir();
-				it.remove();
-			}
-
-			if (tablero[fila][columna] == IDFRUTA) {
-				tablero[fila][columna] = 0;
-				int i = buscarFruta(fila, columna);
-				s.comerConsumible(frutas.get(i));
-				frutas.remove(i);
-				colocarFrutas();
-			}
-
-			if (tablero[fila][columna] == IDPU) {
-				tablero[fila][columna] = 0;
-				int i = buscarPowerUp(fila, columna);
-				s.comerConsumible(powerUps.get(i));
-				powerUps.remove(i);
-			}
-
-			for (Snake s1 : serpientes) {
-				if (!s.equals(s1)) {
-					if (s.getPosicion().equals(s1.getPosicion())) { // head to head
-						s.morir();
-						s1.morir();
-						it.remove();
-					} else { // head to boody
-						ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
-
-						for (BodySnake body : bodyS1) {
-							if (s.getPosicion().equals(body.getPosicion())) {
-								s.morir();
-								break;
-							}
-						}
-					}
-				}
-			} // fin for(Snake s1 : serpientes)
-		}//*/
 	}
 
 	public Snake getSnake(int i) {
@@ -247,8 +207,7 @@ public class Tablero {
 		return this.serpientes.size();
 	}
 	
-	public boolean hayPared(Posicion pos)
-	{
-		return this.tablero[(int)pos.getX()][(int)pos.getY()]==PARED;
+	public boolean hayPared(Posicion pos) {
+		return this.tablero[(int)pos.getX()][(int)pos.getY()] == PARED;
 	}
 }
