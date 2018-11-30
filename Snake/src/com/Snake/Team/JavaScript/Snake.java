@@ -73,25 +73,23 @@ public class Snake {
 	public void cambiarDireccion(Direccion dir) {
 		switch (dir) {
 		case izquierda:
-			setDirection(dir, Direccion.derecha, Direccion.izquierda);
+			setDirection(dir, Direccion.derecha);
 			break;
 		case derecha:
-			setDirection(dir, Direccion.izquierda, Direccion.derecha);
+			setDirection(dir, Direccion.izquierda);
 			break;
 		case arriba:
-			setDirection(dir, Direccion.abajo, Direccion.arriba);
+			setDirection(dir, Direccion.abajo);
 			break;
 		case abajo:
-			setDirection(dir, Direccion.arriba, Direccion.abajo);
+			setDirection(dir, Direccion.arriba);
 			break;
 		}
 	}
 
-	private void setDirection(Direccion dir, Direccion opuesto, Direccion orientacion) {
-		if (bodySnake.isEmpty() || this.direccion != opuesto) {
-			this.direccion = dir;
-			this.orientacion = orientacion;
-		}
+	private void setDirection(Direccion dir, Direccion opuesto) {
+		if (bodySnake.isEmpty() || this.direccion != opuesto) 
+			this.direccion = this.orientacion = dir;
 	}
 
 	public boolean comeSuCuerpo() {

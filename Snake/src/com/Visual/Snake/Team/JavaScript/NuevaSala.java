@@ -5,8 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.Snake.Team.JavaScript.Direccion;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -33,8 +38,6 @@ public class NuevaSala extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Login.nombre = "Test";
-
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -62,7 +65,6 @@ public class NuevaSala extends JFrame {
 		// listado de jugadores
 		listPlayers = new java.awt.List();
 		listPlayers.setBackground(Color.WHITE);
-		listPlayers.setMultipleSelections(false);
 		listPlayers.setBounds(10, 41, 260, 153);
 		listPlayers.add(nombreJugador);
 		contentPane.add(listPlayers);
@@ -95,30 +97,73 @@ public class NuevaSala extends JFrame {
 		setVisible(true);
 		addListener();
 	}
+	
+	private void iniciarPartida() {
+		try {
+			List<String> nombres = new ArrayList<>();
+
+			for (int i = 0; i < comboBoxCantSnakes.getSelectedIndex() + 2; i++) {
+				if (i < listPlayers.getItemCount())
+					nombres.add(listPlayers.getItem(i));
+				else
+					nombres.add("Snake" + i);
+			}
+			new VentanaTablero(nombres, LARGO, ANCHO);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		dispose();
+	}
 
 	private void addListener() {
 		btnIniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					List<String> nombres = new ArrayList<>();
-
-					for (int i = 0; i < comboBoxCantSnakes.getSelectedIndex() + 2; i++) {
-						if (i < listPlayers.getItemCount())
-							nombres.add(listPlayers.getItem(i));
-						else
-							nombres.add("Snake" + i);
-					}
-					new VentanaTablero(nombres, LARGO, ANCHO);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				dispose();
+				iniciarPartida();
 			}
 		});
 		cancelarButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new Menu(nombreJugador);
 				dispose();
+			}
+		});
+		comboBoxCantSnakes.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+					iniciarPartida();
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		listPlayers.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+					iniciarPartida();
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}

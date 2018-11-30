@@ -18,8 +18,9 @@ public class Servidor {
 	private Connection connection = null;
 
 	public static void main(String[] args) {
+		final int puerto = 1234; 
 		Logger log = Logger.getLogger(Servidor.class);
-		int puerto = 1234;
+		
 		int maximoConexiones = 10; // Maximo de conexiones simultaneas
 		ServerSocket servidor = null;
 		Socket socket = null;
