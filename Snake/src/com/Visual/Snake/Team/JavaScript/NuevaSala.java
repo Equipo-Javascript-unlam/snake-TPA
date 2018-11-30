@@ -15,6 +15,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Color;
 
 public class NuevaSala extends JFrame {
 
@@ -32,7 +33,7 @@ public class NuevaSala extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Login.nombre = "Cascote";// agregado para pruebas
+		Login.nombre = "Test";
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -60,9 +61,10 @@ public class NuevaSala extends JFrame {
 
 		// listado de jugadores
 		listPlayers = new java.awt.List();
+		listPlayers.setBackground(Color.WHITE);
 		listPlayers.setMultipleSelections(false);
 		listPlayers.setBounds(10, 41, 260, 153);
-		listPlayers.add(Login.nombre);
+		listPlayers.add(nombreJugador);
 		contentPane.add(listPlayers);
 
 		JLabel lblListaDeJugadores = new JLabel("Lista de jugadores");
