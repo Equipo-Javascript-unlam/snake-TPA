@@ -6,8 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.Snake.Team.JavaScript.Direccion;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,9 +22,7 @@ import java.awt.Color;
 
 public class NuevaSala extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private final int LARGO = 25;
-	private final int ANCHO = 25;
+	private static final long serialVersionUID = -7281117488431423678L;
 	private JPanel contentPane;
 	private JButton btnIniciar;
 	private JButton cancelarButton;
@@ -97,18 +93,16 @@ public class NuevaSala extends JFrame {
 		setVisible(true);
 		addListener();
 	}
-	
+
 	private void iniciarPartida() {
 		try {
 			List<String> nombres = new ArrayList<>();
 
-			for (int i = 0; i < comboBoxCantSnakes.getSelectedIndex() + 2; i++) {
-				if (i < listPlayers.getItemCount())
-					nombres.add(listPlayers.getItem(i));
-				else
-					nombres.add("Snake" + i);
+			for (int i = 0; i < listPlayers.getItemCount(); i++) {
+				nombres.add(listPlayers.getItem(i));
 			}
-			new VentanaTablero(nombres, LARGO, ANCHO, comboBoxCantSnakes.getSelectedIndex());
+
+			new VentanaTablero(nombres, comboBoxCantSnakes.getSelectedIndex() + 2);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -130,40 +124,40 @@ public class NuevaSala extends JFrame {
 		comboBoxCantSnakes.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					iniciarPartida();
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		listPlayers.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					iniciarPartida();
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}

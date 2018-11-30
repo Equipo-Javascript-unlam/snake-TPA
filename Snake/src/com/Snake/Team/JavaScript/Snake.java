@@ -13,26 +13,6 @@ public class Snake {
 	private Direccion orientacion;
 	private Color color;
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public boolean getState() {
-		return vivo;
-	}
-
-	public String getNombreJugador() {
-		return nombreJugador;
-	}
-
-	public ArrayList<BodySnake> getCuerpo() {
-		return this.bodySnake;
-	}
-
 	public Snake(Posicion pos, String nombre) {
 		nombreJugador = nombre;
 		headSnake = new HeadSnake(pos);
@@ -135,6 +115,26 @@ public class Snake {
 		}
 	}
 
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public boolean getState() {
+		return vivo;
+	}
+
+	public String getNombreJugador() {
+		return nombreJugador;
+	}
+	
+	public ArrayList<BodySnake> getCuerpo() {
+		return this.bodySnake;
+	}
+	
 	public int getCantidadDeFruta() {
 		return cantidadDeFrutaConsumida;
 	}

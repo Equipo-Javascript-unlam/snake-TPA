@@ -72,6 +72,24 @@ public class Tablero {
 		return new Posicion(fil, col);
 	}
 
+	private String generarNombreBot() {
+		int rand = (int) (Math.random() * 4);
+		
+		switch(rand) {
+		case 0:
+			return "Cerebro";
+		case 1:
+			return "Jesus";
+		case 2:
+			return "Kippke";
+		case 3:
+			return "Cascote";
+		default:
+			return "SnakeBot";
+		
+		}
+	}
+
 	private int buscarFruta(int f, int c) {
 		Posicion pos = new Posicion(f, c);
 		int i = 0;
@@ -106,6 +124,14 @@ public class Tablero {
 
 	public void colocarVibora(String nom) {
 		serpientes.add(new Snake(generarPosicion(), nom));
+	}
+
+	public Tablero getTablero() {
+		return this;
+	}
+	
+	public void colocarBot() {
+		serpientes.add(new SnakeIA(generarPosicion(), generarNombreBot(), this));
 	}
 
 	public void colocarFrutas() {
@@ -169,8 +195,8 @@ public class Tablero {
 						}
 					} // fin for(Snake s1 : serpientes)
 				}
-				
-				if(hayCuerpo(fila, columna))
+
+				if (hayCuerpo(fila, columna))
 					s.morir();
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {

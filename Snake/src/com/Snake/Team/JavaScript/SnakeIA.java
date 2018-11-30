@@ -2,13 +2,25 @@ package com.Snake.Team.JavaScript;
 
 import java.util.ArrayList;
 
-public class SnakeIA extends Snake {
+import com.Snake.Team.JavaScript.Snake.BodySnake;
+import com.Snake.Team.JavaScript.Snake.HeadSnake;
 
-	public SnakeIA() {
-		super(new Posicion(7, 7), "Cerebro");// Jesus-Kippke
+public class SnakeIA extends Snake {
+	private HeadSnake headSnake;
+	private ArrayList<BodySnake> bodySnake;
+	Tablero tablero;
+	
+	public SnakeIA(Posicion pos, String nom, Tablero tab) {
+		super(pos, nom);// Jesus-Kippke
+		this.tablero = tab;
 	}
 
-	public Direccion getDireccionIA(Tablero tablero) {
+	public void moverse() {
+		tablero = tablero.getTablero();
+		
+	}
+	
+	public Direccion getDireccionIA() {
 		Direccion dir;
 		Posicion move, fruta = getPosicionFrutaCercana(tablero);
 		ArrayList<Direccion> direccionesPosibles = new ArrayList<Direccion>();
