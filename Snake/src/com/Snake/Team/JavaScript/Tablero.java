@@ -25,7 +25,7 @@ public class Tablero {
 		powerUps = new ArrayList<>();
 		inicializarTablero();
 
-		for (int i = 0; i < 30; i++)
+		for (int i = 0; i < 2; i++)
 			colocarFrutas();
 	}
 
@@ -103,8 +103,8 @@ public class Tablero {
 		serpientes.add(new Snake(pos, nom));
 	}
 	
-	public void colocarVibora(Snake s) {   //METODO DE PRUEBA
-		serpientes.add(s);
+	public void colocarVibora(Snake snake) {   //METODO DE PRUEBA
+		serpientes.add(snake);
 	}
 
 	public void colocarVibora(String nom) {
@@ -129,19 +129,15 @@ public class Tablero {
 
 	public void colision() {
 		int fila, columna;
-		Iterator<Snake> it = serpientes.iterator();
+
 		
 		//este for es para probar, despues se vera si se borra
-		for(Snake s : serpientes) {
-			try {
-				if (s.comeSuCuerpo()) {
-					s.morir();
-					break;
-				}
-				
+		try {
+			for(Snake s : serpientes) {	
 				int i;
 				fila = (int) s.getPosicion().getX();
 				columna = (int) s.getPosicion().getY();
+				
 				switch (tablero[fila][columna]) {
 				case IDFRUTA:
 					tablero[fila][columna] = 0;
@@ -158,19 +154,12 @@ public class Tablero {
 					break;
 				case PARED:
 					s.morir();
+					break;
 				}
-			} catch (ArrayIndexOutOfBoundsException ex) {
-				s.morir();
-			}
-			
-			
-			
-
-			for (Snake s1 : serpientes) {
-				if (!s.equals(s1)) {
-					if (s.getPosicion().equals(s1.getPosicion())) { // head to head
+				
+				for (Snake s1 : serpientes) {
+					if (s.getPosicion().equals(s1.getPosicion()) && !s.equals(s1)) { // head to head
 						s.morir();
-						s1.morir();
 					} else { // head to boody
 						ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
 
@@ -181,13 +170,18 @@ public class Tablero {
 							}
 						}
 					}
-				}
-			} // fin for(Snake s1 : serpientes)
+				} // fin for(Snake s1 : serpientes)
+			}
+		} catch (ArrayIndexOutOfBoundsException ex) {
+			ex.printStackTrace();
 		}
 
-		for(int i = 0; i < serpientes.size(); i ++) {
-			if(!serpientes.get(i).getState())
-				serpientes.remove(i);
+		for(int i=0; i < serpientes.size(); i++) {
+			Snake snake = serpientes.get(i);
+			if(!snake.getState()) {
+				serpientes.remove(snake);
+				i--;
+			}	
 		}
 	}
 

@@ -15,11 +15,11 @@ import com.Snake.Team.JavaScript.Posicion;
 import com.Snake.Team.JavaScript.Snake;
 import com.Snake.Team.JavaScript.Tablero;
 
-class TestSnake {
+public class TestSnake {
 
 	@Test
-	void moverseEnLineaRecta() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");//Posicion inicial
+	public void moverseEnLineaRecta() {
+		Snake s1 = new Snake(new Posicion(1,1), "snake1");//Posicion inicial
 		Posicion p = new Posicion(2,1);//posicion esperada
 		
 		s1.cambiarDireccion(Direccion.derecha);
@@ -28,7 +28,7 @@ class TestSnake {
 	}
 	
 	@Test
-	void cambiarDireccion() {
+	public void cambiarDireccion() {
 		Snake s1 = new Snake(new Posicion(1,2), "pepe");//Posicion inicial
 		Posicion p = new Posicion(0,3);//posicion esperada
 		
@@ -41,7 +41,7 @@ class TestSnake {
 	}
 	
 	@Test
-	void moverseHaciaAtrasSinCuerpo() {
+	public void moverseHaciaAtrasSinCuerpo() {
 		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
 		Posicion p = new Posicion(2,3);//posicion esperada
 		
@@ -52,42 +52,47 @@ class TestSnake {
 	}
 	
 	@Test
-	void moverseHaciaAtrasConCuerpo() {
-		Snake s1 = new Snake(new Posicion(3,3), "pepe");//Posicion inicial
-		Posicion p = new Posicion(4,3);//posicion esperada
+	public void moverseHaciaAtrasConCuerpo() {
+		Snake s1 = new Snake(new Posicion(3,3), "Test");
+		Posicion finalPosition = new Posicion(4,3);
 		
 		s1.cambiarDireccion(Direccion.derecha);
 		s1.crecer();
 		s1.cambiarDireccion(Direccion.izquierda);
 		s1.moverse();
-		assertEquals(p, s1.getPosicion());
-	}
-	
-	@Test
-	void  choqueDeDosCabezasMismaPosicion() {
-		Tablero t = new Tablero(5, 5, 1);
-		t.colocarVibora(new Posicion(1,1), "cabeza1");
-		t.colocarVibora(new Posicion(1,3), "cabeza2");
 		
-		t.serpientes.get(0).cambiarDireccion(Direccion.derecha);
-		t.serpientes.get(1).cambiarDireccion(Direccion.izquierda);
-		t.serpientes.get(0).moverse();
-		t.serpientes.get(1).moverse();
-		t.colision();
+		assertEquals(finalPosition, s1.getPosicion());
 	}
 	
 	@Test
-	void choqueConLaPared() {
+	public void choqueDeDosCabezasMismaPosicion() {
+		Tablero t = new Tablero(10, 10, 1);
+		t.colocarVibora(new Posicion(1,1), "Snake1");
+		t.colocarVibora(new Posicion(3,1), "Snake2");
+		
+		t.getSnake(0).cambiarDireccion(Direccion.derecha);
+		t.getSnake(1).cambiarDireccion(Direccion.izquierda);
+		t.getSnake(0).moverse();
+		t.getSnake(1).moverse();
+		t.colision();
+		
+		assertEquals(true, t.serpientes.isEmpty());
+	}
+	
+	@Test
+	public void choqueConLaPared() {
 		Tablero t = new Tablero(5, 5, 5);
 		
 		t.colocarVibora(new Posicion(1,1), "pepe");
 		t.serpientes.get(0).cambiarDireccion(Direccion.izquierda);
 		t.serpientes.get(0).moverse();
 		t.colision();//mostrar mensaje de chocar contra pared
+		
+		assertEquals(true, t.serpientes.isEmpty());
 	}
 	
 	@Test
-	void consumirFrutaYCrecer() {
+	public void consumirFrutaYCrecer() {
 		Snake s1 = new Snake(new Posicion(1,1), "pepe");
 		Fruta fruta = new Fruta(new Posicion(1,2));
 		
@@ -99,36 +104,62 @@ class TestSnake {
 	}
 	
 	@Test
-	void choqueConSuPropioCuerpo() {
-		Tablero t = new Tablero(6, 6, 0);
+	public void choqueConSuPropioCuerpo() {
+		Tablero tablero = new Tablero(10, 10, 0);
 		
-		t.colocarVibora(new Posicion(4,3), "Aldo");
+		tablero.colocarVibora(new Posicion(4,3), "Test");
 		
-		t.serpientes.get(0).cambiarDireccion(Direccion.derecha);
-		t.serpientes.get(0).crecer();
-		t.serpientes.get(0).crecer();
-		t.serpientes.get(0).crecer();
-		t.serpientes.get(0).cambiarDireccion(Direccion.abajo);
-		t.serpientes.get(0).moverse();
-		t.serpientes.get(0).cambiarDireccion(Direccion.izquierda);
-		t.serpientes.get(0).moverse();
-		t.serpientes.get(0).cambiarDireccion(Direccion.arriba);
-		t.serpientes.get(0).moverse();
-		t.colision();
+		tablero.getSnake(0).cambiarDireccion(Direccion.derecha);
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).crecer();
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).crecer();
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).crecer();
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).crecer();
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).cambiarDireccion(Direccion.abajo);
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).cambiarDireccion(Direccion.izquierda);
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(0).cambiarDireccion(Direccion.arriba);
+		tablero.getSnake(0).moverse();
+		tablero.colision();
+		
+		assertEquals(true, tablero.serpientes.isEmpty());
 	}
 	
 	@Test
-	void choqueConCuerpoDeOtraSerpiente() {
-		Snake snake1 = new Snake(new Posicion(1,1), "pepe");
-		Snake snake2 = new Snake(new Posicion(2,2), "papa");
+	public void choqueConCuerpoDeOtraSerpiente() {
+		Tablero tablero = new Tablero(6, 6, 0);
 		
+		tablero.colocarVibora(new Snake(new Posicion(2,2), "snake1"));
+		tablero.colocarVibora(new Snake(new Posicion(3,3), "snake2"));
+		tablero.getSnake(0).cambiarDireccion(Direccion.abajo);
+		tablero.getSnake(1).cambiarDireccion(Direccion.izquierda);
+		tablero.getSnake(1).moverse();
+		tablero.getSnake(1).crecer();
+		tablero.getSnake(1).moverse();
+		tablero.getSnake(0).moverse();
+		tablero.colision();
 		
-		
+		assertEquals(1, tablero.serpientes.size());
 	}
 	
 	@Test
-	void dosCabezasSeCruzan() {
-		Snake s1 = new Snake(new Posicion(1,1), "pepe");
-		Snake s2 = new Snake(new Posicion(2,2), "papa");
+	public void dosCabezasSeCruzan() {
+		Tablero tablero = new Tablero(6, 6, 0);
+		Snake snake1 = new Snake(new Posicion(2,2), "snake1");
+		Snake snake2 = new Snake(new Posicion(3,3), "snake2");
+		tablero.colocarVibora(snake1);
+		tablero.colocarVibora(snake2);
+		tablero.getSnake(0).cambiarDireccion(Direccion.derecha);
+		tablero.getSnake(1).cambiarDireccion(Direccion.arriba);
+		tablero.getSnake(0).moverse();
+		tablero.getSnake(1).moverse();
+		tablero.colision();
+		
+		assertEquals(true, tablero.serpientes.isEmpty());
 	}
 }
