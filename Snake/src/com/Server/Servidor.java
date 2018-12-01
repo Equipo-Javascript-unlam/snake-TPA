@@ -1,17 +1,16 @@
 package com.Server;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.JOptionPane;
-
 import org.jboss.logging.Logger;
-
 import com.Database.Puntaje;
 import com.Database.SqliteConection;
 import com.Snake.Team.JavaScript.Tablero;
@@ -19,7 +18,18 @@ import com.Snake.Team.JavaScript.Tablero;
 public class Servidor {
 	private Connection connection = null;
 	private Tablero tablero;
-
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
+	
+	public static void main(String[] args) {
+		Servidor server = new Servidor();
+		try {
+			server.ProcesarTablero();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Servidor() {
 		final int PUERTO = 12345;
 		Logger log = Logger.getLogger(Servidor.class);
@@ -34,8 +44,7 @@ public class Servidor {
 
 			while (true) {
 				socket = servidor.accept();
-
-				ConexionCliente cc = new ConexionCliente(socket);
+				ConexionCliente cc = new ConexionCliente(socket, servidor);
 				cc.start();
 			}
 		} catch (IOException ex) {
@@ -50,16 +59,7 @@ public class Servidor {
 		}
 	}
 
-	public static void main(String[] args) {
-		Servidor server = new Servidor();
-		try {
-			server.ProcesarTablero();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+
 
 	public void ProcesarTablero() throws InterruptedException {
 		//va aca?

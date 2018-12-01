@@ -3,27 +3,33 @@ package com.Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import org.jboss.logging.Logger;
-
 import com.Client.Usuario;
-import com.Visual.Snake.Team.JavaScript.Login;
+import com.Snake.Team.JavaScript.Tablero;
+import com.Visual.Snake.Team.JavaScript.NuevaSala;
 
 public class ConexionCliente extends Thread {
 	private Logger log = Logger.getLogger(ConexionCliente.class);
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Socket socket;
+	private ArrayList<Tablero> partidasActivas;
+	
+	private ObjectInputStream inServer;
+	private ObjectOutputStream outServer;
+	private static ArrayList<NuevaSala> SalasEnEspera = new ArrayList<NuevaSala>();
+	private boolean enMenu = false;
 
-	public ConexionCliente(Socket socket) {
+	public ConexionCliente(Socket socket, ServerSocket servidor) {
 		this.socket = socket;
 
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
-			
-			
 		} catch (IOException ex) {
 			log.error("Error al crear los stream de entrada y salida : " + ex.getMessage());
 		}
@@ -33,14 +39,21 @@ public class ConexionCliente extends Thread {
 	public void run() {
 		DatoComunicacion data;
 		boolean conectado = true;
-
+		boolean usuarioValido = false;
 		while (conectado) {
 			try {
-				Usuario user = (Usuario) in.readObject();
-				if(user.getUser().equals("Javascript") && user.getPass().equals("123")) {
-					out.writeObject(1);
-				} else {
-					out.writeObject(0);;
+				while(!usuarioValido) {
+					Usuario user = (Usuario) in.readObject();
+					if(user.getUser().equals("Javascript") && user.getPass().equals("123")) {
+						out.writeObject(1);
+						usuarioValido = true;
+						enMenu = true;
+					} else 
+						out.writeObject(0);;
+				}
+				while(enMenu) {
+					out.writeObject(SalasEnEspera);
+					enMenu = (boolean)in.readObject();
 				}
 				
 			} catch (IOException | ClassNotFoundException ex) {

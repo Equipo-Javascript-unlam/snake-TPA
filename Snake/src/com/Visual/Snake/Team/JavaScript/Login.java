@@ -4,10 +4,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.Client.Cliente;
 import com.Client.Usuario;
-import com.Server.DatoComunicacion;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -112,22 +110,20 @@ public class Login extends JFrame {
 		int state = cliente.loguear(new Usuario(nombre, pass)); 
 
 		if (state == 1) {
-			new Menu(nombre);
+			new Menu(nombre, cliente);
 			dispose();
 		} else if(state == 0){
-			passTextField.setText("");
-			nameTextField.setText("");
 			JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase\u00F1a incorrectos", "Error login",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			passTextField.setText("");
-			nameTextField.setText("");
 			JOptionPane.showMessageDialog(null, "Error al conectar con el servidor", "Error login",
 					JOptionPane.WARNING_MESSAGE);
 		}
+		
+		passTextField.setText("");
+		nameTextField.setText("");
 	}
 
-	// Aca se capturan las distintas acciones en la ventana
 	private void addListener() {
 		registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

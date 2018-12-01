@@ -12,10 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.xml.crypto.Data;
 
-import com.Client.Cliente;
-import com.Server.DatoComunicacion;
 import com.Snake.Team.JavaScript.Direccion;
 import com.Snake.Team.JavaScript.Posicion;
 import com.Snake.Team.JavaScript.Snake;
@@ -32,9 +29,8 @@ public class VentanaTablero extends JFrame {
 	private static DibujoTablero contentPane;
 	private static Tablero tablero;
 	private java.awt.List listPlayers;
-	private static final int LARGO = 25;
-	private static final int ANCHO = 25;
-	private static DatoComunicacion data = null;
+	private static int largo;
+	private static int ancho;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -43,7 +39,7 @@ public class VentanaTablero extends JFrame {
 					List<String> names = new ArrayList<>();
 					Login.nombre = "Test";
 					names.add(Login.nombre);
-					VentanaTablero frame = new VentanaTablero(names, 2);
+					VentanaTablero frame = new VentanaTablero(names, 25, 25);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,13 +67,10 @@ public class VentanaTablero extends JFrame {
 		}
 	}
 
-	public VentanaTablero(int idSnake, Cliente cliente) {
-		
-	}
-	
-	public VentanaTablero(List<String> nameSnakes, int cantidadSerpientes)
-			throws InterruptedException {
-		tablero = new Tablero(LARGO, ANCHO, 11);
+	public VentanaTablero(List<String> nameSnakes, int largo, int ancho) throws InterruptedException {
+		VentanaTablero.largo = largo;
+		VentanaTablero.ancho = ancho;
+		tablero = new Tablero(largo, ancho, 11);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(1000, 1000, 1000, 10000);
 		contentPane = new DibujoTablero();
@@ -98,8 +91,7 @@ public class VentanaTablero extends JFrame {
 		listPlayers.setBounds(650, 20, 300, 500);
 		listPlayers.setFocusable(false);
 		listPlayers.setFont(getFont().deriveFont(Font.BOLD, 20));
-
-		for (String nombreJugador : nameSnakes) {
+		for(String nombreJugador: nameSnakes) {
 			listPlayers.add(nombreJugador);
 		}
 
@@ -110,18 +102,8 @@ public class VentanaTablero extends JFrame {
 			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
 			tablero.getSnake(i).setColor(changeColor(i));
 		}
-
-		if (nameSnakes.size() < cantidadSerpientes) {
-			for (int i = nameSnakes.size(); i < cantidadSerpientes; i++) {
-				tablero.colocarBot();
-				tablero.getSnake(i).setColor(changeColor(i));
-				listPlayers.add(tablero.getSnake(i).getNombreJugador());
-			}
-		}
-
-		data = new DatoComunicacion();
-		data.setTablero(tablero);
-		data.setNumeroSerpiente(0);
+		
+		
 		serpiente = tablero.getSnake(0);
 		// Game Loop
 		Thread hilo = new Thread(new Runnable() {
@@ -132,29 +114,27 @@ public class VentanaTablero extends JFrame {
 					while (true) {
 						MyKeyListener.inicializar();
 						getContentPane().add(contentPane);
-						Cliente.enviarData(data);
-//						TimeUnit.MILLISECONDS.sleep(200);
+						TimeUnit.MILLISECONDS.sleep(200);
 						salir = MyKeyListener.escapeKeyPressed();
 
-//						// reemplazar esto una vez creado servidor cliente
-//						if (!salir && tablero.getCantidadSnakes() > 0) {
-//							for (int i = 0; i < tablero.getCantidadSnakes(); i++)
-//								tablero.getSnake(i).moverse();
-//						}
-//						else {
-//							if (!salir)
-//								JOptionPane.showMessageDialog(null,
-//										"Has obtenido un pasaje de ida al cementerio =).\nPuntaje:"
-//												+ serpiente.getCantidadDeFruta());
-//
-//							new NuevaSala(serpiente.getNombreJugador());
-//							dispose();
-//							break;
-//						}
-//						// tablero = dataDelServer
-//						tablero.colision();
-						data = Cliente.recibirRespuestaServidor();
-						tablero = data.getTablero();
+						// reemplazar esto una vez creado servidor cliente
+						if (!salir && tablero.getCantidadSnakes() > 0){
+							for (int i = 0; i < tablero.getCantidadSnakes(); i++)
+								tablero.getSnake(i).moverse();
+							}
+							
+						else {
+							if (!salir)
+								JOptionPane.showMessageDialog(null,
+										"Has obtenido un pasaje de ida al cementerio =).\nPuntaje:"
+												+ serpiente.getCantidadDeFruta());
+
+							new NuevaSala(serpiente.getNombreJugador());
+							dispose();
+							break;
+						}
+						//tablero = dataDelServer
+						tablero.colision();
 						contentPane.repaint();
 						repaint();
 					}
@@ -170,8 +150,8 @@ public class VentanaTablero extends JFrame {
 	public static class DibujoTablero extends JPanel implements ActionListener {
 
 		private static final long serialVersionUID = 1L;
-		private final int TAM_TABLERO = VentanaTablero.ANCHO;
-		private final int CUADRO = VentanaTablero.LARGO;
+		private final int TAM_TABLERO = VentanaTablero.ancho;
+		private final int CUADRO = VentanaTablero.largo;
 		private final int PARED = 5;
 		private final int SEPARACION = 2;
 
@@ -184,8 +164,7 @@ public class VentanaTablero extends JFrame {
 			for (int j = 0; j < tablero.getCantidadSnakes(); j++) {
 				graphics.setColor(tablero.getSnake(j).getColor());
 				p = tablero.getSnake(j).getPosicion();
-				graphics.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
-						CUADRO - SEPARACION);
+				graphics.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
 
 				for (int i = 0; i < tablero.getSnake(j).getLongitud() - 1; i++) {
 					p = tablero.getSnake(j).getCuerpo().get(i).getPosicion();
@@ -212,8 +191,7 @@ public class VentanaTablero extends JFrame {
 
 			for (int i = 0; i < tablero.getCantidadFrutas(); i++) {
 				p = tablero.getPosicionFruta(i);
-				graphics.fillOval(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
-						CUADRO - SEPARACION);
+				graphics.fillOval(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
 			}
 		}
 
@@ -238,23 +216,24 @@ public class VentanaTablero extends JFrame {
 				return;
 
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				//tablero.getSnake(0).cambiarDireccion(Direccion.arriba);
-				data.setMovimiento(Direccion.arriba);
+				tablero.getSnake(0).cambiarDireccion(Direccion.arriba);
+				System.out.println("arriba");
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				//tablero.getSnake(0).cambiarDireccion(Direccion.abajo);
-				data.setMovimiento(Direccion.abajo);
+				tablero.getSnake(0).cambiarDireccion(Direccion.abajo);
+
+				System.out.println("abajo");
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				//tablero.getSnake(0).cambiarDireccion(Direccion.izquierda);
-				data.setMovimiento(Direccion.izquierda);
+				tablero.getSnake(0).cambiarDireccion(Direccion.izquierda);
 			}
+			System.out.println("izquierda");
 
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				//tablero.getSnake(0).cambiarDireccion(Direccion.derecha);
-				data.setMovimiento(Direccion.derecha);
+				tablero.getSnake(0).cambiarDireccion(Direccion.derecha);
+				System.out.println("derecha");
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {

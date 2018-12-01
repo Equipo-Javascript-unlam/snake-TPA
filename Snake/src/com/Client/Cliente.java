@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import org.jboss.logging.Logger;
+import java.util.ArrayList;
 
+import org.jboss.logging.Logger;
 import com.Server.DatoComunicacion;
-import com.Visual.Snake.Team.JavaScript.Login;
+import com.Snake.Team.JavaScript.*;
+import com.Visual.Snake.Team.JavaScript.NuevaSala;
 
 public class Cliente {
 	private static Logger log = Logger.getLogger(Cliente.class);
@@ -17,6 +18,8 @@ public class Cliente {
 	private static ObjectInputStream in;
 	private static int puerto = 12345;
 	private static String host = "127.0.0.1";
+	private static String nombreJugador;
+	private ArrayList<NuevaSala> salas;
 
 	public Cliente() {
 		try {
@@ -31,8 +34,9 @@ public class Cliente {
 	public int loguear(Usuario user) {
 		try {
 			out.writeObject(user);
+			nombreJugador = user.getUser();
 			return (int) in.readObject();
-		} catch (IOException  e) {
+		} catch (IOException e) {
 			log.error("Error al enviar el usuario" + e.getMessage() + "");
 			return 0;
 		} catch (NullPointerException | ClassNotFoundException e) {
@@ -40,13 +44,21 @@ public class Cliente {
 			return -1;
 		}
 	}
-	
+
+	public String getNombreJugador() {
+		return nombreJugador;
+	}
+
 	public static DatoComunicacion recibirRespuestaServidor() throws ClassNotFoundException, IOException {
 		DatoComunicacion data;
 
 		in = new ObjectInputStream(socket.getInputStream());
 		data = (DatoComunicacion) in.readObject();
 		return data;
+	}
+
+	public ArrayList<Tablero> buscarSalas() {
+		return null;
 	}
 
 	public static void recibirMensajesServidor() {
@@ -75,7 +87,6 @@ public class Cliente {
 		} catch (IOException e) {
 			log.error("Error al enviar datos: " + e.getMessage() + ".");
 		}
-		
 	}
 
 	public static void main(String[] args) {
@@ -83,5 +94,30 @@ public class Cliente {
 		// Connection conn = SqliteConection.dbConector();
 		Cliente c = new Cliente();
 		Cliente.recibirMensajesServidor();
+	}
+
+	public ArrayList<NuevaSala> recibirSalas(boolean flag) {
+		salas = null;
+
+		if (flag) {
+			Thread hilo = new Thread(new Runnable() {
+				public void run() {
+					try {
+						salas = (ArrayList<NuevaSala>) in.readObject();
+
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					} finally {
+						try {
+							out.writeObject(true);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		
+		return salas;
 	}
 }
