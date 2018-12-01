@@ -37,7 +37,7 @@ public class ConexionCliente extends Thread {
 		while (conectado) {
 			try {
 				Usuario user = (Usuario) in.readObject();
-				if(user.getUser() == "Javascritpt" && user.getPass() == "123") {
+				if(user.getUser().equals("Javascript") && user.getPass().equals("123")) {
 					out.writeObject(1);
 				} else {
 					out.writeObject(0);;
