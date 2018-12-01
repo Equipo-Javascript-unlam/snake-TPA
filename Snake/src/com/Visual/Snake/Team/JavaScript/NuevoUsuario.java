@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
+import com.Client.Cliente;
 import com.Server.Servidor;
 
 import java.awt.Component;
@@ -109,10 +110,8 @@ public class NuevoUsuario extends JFrame {
 			JOptionPane.showMessageDialog(null, "Ingrese una contrase\u00F1a");
 			return;
 		}
-		// reemplazar esto una vez realizada la conexion cliente servidor
-		Servidor sv = new Servidor();
 
-		if (sv.registrarUsuario(nombre, pass)) {
+		if (Cliente.crearUsuario(nombre, pass)) {
 			JOptionPane.showMessageDialog(null, "Usuario registrado con exito");
 			dispose();
 		}

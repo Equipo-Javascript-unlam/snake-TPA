@@ -8,18 +8,22 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import org.jboss.logging.Logger;
 import com.Database.Puntaje;
 import com.Database.SqliteConection;
 import com.Snake.Team.JavaScript.Tablero;
+import com.Visual.Snake.Team.JavaScript.NuevaSala;
 
 public class Servidor {
-	private Connection connection = null;
+	private static Connection connection = null;
 	private Tablero tablero;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
+	private static ArrayList<NuevaSala> salas = new ArrayList<NuevaSala>();
 	
 	public static void main(String[] args) {
 		Servidor server = new Servidor();
@@ -92,25 +96,25 @@ public class Servidor {
 		return puntaje;
 	}
 
-	public int buscarUsuario(String user, String pass) {
+	public static int buscarUsuario(String user, String pass) throws SQLException {
 		// String query = "SELECT * FROM Usuarios WHERE user=? AND pass=?";
 		String query = "SELECT * FROM Usuarios WHERE user=?";
-
+		ResultSet rs = null;
+		PreparedStatement pst = null;
+		
 		try {
 			connection = SqliteConection.dbConector();
-			PreparedStatement pst = connection.prepareStatement(query);
+			pst = connection.prepareStatement(query);
 			pst.setString(1, user);
 			// pst.setString(2, pass);
 
-			ResultSet rs = pst.executeQuery();
+			rs = pst.executeQuery();
 			int res = 0;
 
 			if (rs.next())
 				res++;
 
 			if (res == 0) {// usuario inexistente
-				rs.close();
-				pst.close();
 				return 2;
 			}
 
@@ -123,18 +127,18 @@ public class Servidor {
 			if (rs.next())
 				res++;
 
-			rs.close();
-			pst.close();
-
 			return res > 0 ? 1 : 0;
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 			return 0;
+		}finally {
+			rs.close();
+			pst.close();
 		}
 	}
 
-	public boolean registrarUsuario(String user, String pass) {
+	public static boolean registrarUsuario(String user, String pass) {
 		String query = "INSERT INTO Usuarios(user, pass) VALUES(?, ?);";
 
 		try {
@@ -150,5 +154,14 @@ public class Servidor {
 			JOptionPane.showMessageDialog(null, e);
 			return false;
 		}
+	}
+
+	public static void addSalas(NuevaSala sala) {
+		salas.add(sala);
+		
+	}
+
+	public static ArrayList<NuevaSala> listarSalas() {
+		return salas;
 	}
 }

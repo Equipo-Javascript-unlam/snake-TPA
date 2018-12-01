@@ -97,7 +97,7 @@ public class Menu extends JFrame {
 	}
 
 	private void actualizarListaDeSalas(boolean flag) {
-		ArrayList<NuevaSala> salas = cliente.recibirSalas(flag);
+		ArrayList<NuevaSala> salas = cliente.listarSalas(flag);
 		tablePartidas.removeAll();
 
 		if (salas != null)
@@ -116,7 +116,8 @@ public class Menu extends JFrame {
 
 		btnCrearSala.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new NuevaSala(nombre);
+				NuevaSala sala = new NuevaSala(nombre, cliente);
+				cliente.agregarSala(sala);
 				dispose();
 			}
 		});

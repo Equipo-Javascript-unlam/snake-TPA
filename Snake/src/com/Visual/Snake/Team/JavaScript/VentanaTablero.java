@@ -8,17 +8,11 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.Snake.Team.JavaScript.Direccion;
-import com.Snake.Team.JavaScript.Posicion;
-import com.Snake.Team.JavaScript.Snake;
-import com.Snake.Team.JavaScript.SnakeIA;
-import com.Snake.Team.JavaScript.Tablero;
-
+import com.Snake.Team.JavaScript.*;
+import com.Client.*;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -31,6 +25,7 @@ public class VentanaTablero extends JFrame {
 	private java.awt.List listPlayers;
 	private static int largo;
 	private static int ancho;
+	private Cliente cliente;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -39,7 +34,7 @@ public class VentanaTablero extends JFrame {
 					List<String> names = new ArrayList<>();
 					Login.nombre = "Test";
 					names.add(Login.nombre);
-					VentanaTablero frame = new VentanaTablero(names, 25, 25);
+					VentanaTablero frame = new VentanaTablero(names, 25, 25, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,9 +62,10 @@ public class VentanaTablero extends JFrame {
 		}
 	}
 
-	public VentanaTablero(List<String> nameSnakes, int largo, int ancho) throws InterruptedException {
+	public VentanaTablero(List<String> nameSnakes, int largo, int ancho, Cliente cliente) throws InterruptedException {
 		VentanaTablero.largo = largo;
 		VentanaTablero.ancho = ancho;
+		this.cliente = cliente;
 		tablero = new Tablero(largo, ancho, 11);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(1000, 1000, 1000, 10000);
@@ -103,7 +99,6 @@ public class VentanaTablero extends JFrame {
 			tablero.getSnake(i).setColor(changeColor(i));
 		}
 		
-		
 		serpiente = tablero.getSnake(0);
 		// Game Loop
 		Thread hilo = new Thread(new Runnable() {
@@ -129,7 +124,7 @@ public class VentanaTablero extends JFrame {
 										"Has obtenido un pasaje de ida al cementerio =).\nPuntaje:"
 												+ serpiente.getCantidadDeFruta());
 
-							new NuevaSala(serpiente.getNombreJugador());
+							new NuevaSala(serpiente.getNombreJugador(), cliente);
 							dispose();
 							break;
 						}

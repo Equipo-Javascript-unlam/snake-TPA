@@ -74,8 +74,8 @@ public class Tablero {
 
 	private String generarNombreBot() {
 		int rand = (int) (Math.random() * 4);
-		
-		switch(rand) {
+
+		switch (rand) {
 		case 0:
 			return "Cerebro";
 		case 1:
@@ -86,7 +86,7 @@ public class Tablero {
 			return "Cascote";
 		default:
 			return "SnakeBot";
-		
+
 		}
 	}
 
@@ -129,7 +129,7 @@ public class Tablero {
 	public Tablero getTablero() {
 		return this;
 	}
-	
+
 	public void colocarBot() {
 		serpientes.add(new SnakeIA(generarPosicion(), generarNombreBot(), this));
 	}
@@ -160,6 +160,11 @@ public class Tablero {
 				fila = (int) s.getPosicion().getX();
 				columna = (int) s.getPosicion().getY();
 
+				if (s.comeSuCuerpo()) {
+					s.morir();
+					break;
+				}
+
 				switch (tablero[fila][columna]) {
 				case IDFRUTA:
 					tablero[fila][columna] = 0;
@@ -179,9 +184,9 @@ public class Tablero {
 					break;
 				}
 
-				if (serpientes.size() > 1) {
-					for (Snake s1 : serpientes) {
-						if (s.getPosicion().equals(s1.getPosicion()) && !s.equals(s1)) { // head to head
+				for (Snake s1 : serpientes) {
+					if (!s.equals(s1)) {
+						if (s.getPosicion().equals(s1.getPosicion())) { // head to head
 							s.morir();
 						} else { // head to boody
 							ArrayList<BodySnake> bodyS1 = s1.getCuerpo();
@@ -193,11 +198,9 @@ public class Tablero {
 								}
 							}
 						}
-					} // fin for(Snake s1 : serpientes)
-				}
+					}
+				} // fin for(Snake s1 : serpientes)
 
-				if (hayCuerpo(fila, columna))
-					s.morir();
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {
 			ex.printStackTrace();

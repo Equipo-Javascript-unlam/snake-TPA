@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import org.jboss.logging.Logger;
 import com.Server.DatoComunicacion;
+import com.Server.Servidor;
 import com.Snake.Team.JavaScript.*;
 import com.Visual.Snake.Team.JavaScript.NuevaSala;
 
@@ -18,8 +19,8 @@ public class Cliente {
 	private static ObjectInputStream in;
 	private static int puerto = 12345;
 	private static String host = "127.0.0.1";
-	private static String nombreJugador;
-	private ArrayList<NuevaSala> salas;
+	private String nombreJugador;
+	private static ArrayList<NuevaSala> salas = new ArrayList<NuevaSala>();
 
 	public Cliente() {
 		try {
@@ -96,14 +97,17 @@ public class Cliente {
 		Cliente.recibirMensajesServidor();
 	}
 
-	public ArrayList<NuevaSala> recibirSalas(boolean flag) {
-		salas = null;
+	public ArrayList<NuevaSala> listarSalas(boolean flag) {
 
 		if (flag) {
 			Thread hilo = new Thread(new Runnable() {
 				public void run() {
 					try {
-						salas = (ArrayList<NuevaSala>) in.readObject();
+						while(true) {
+							salas = (ArrayList<NuevaSala>) in.readObject();
+							out.writeObject(true);
+						}
+						
 
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
@@ -119,5 +123,25 @@ public class Cliente {
 		}
 		
 		return salas;
+	}
+
+	public void agregarSala(NuevaSala sala) {
+		salas.add(sala);
+	}
+
+	public static boolean crearUsuario(String nombre, String pass) {
+	//	try {
+			Servidor.registrarUsuario(nombre, pass);
+			//out.writeObject(new Usuario(nombre, pass));
+			//return (boolean) in.readObject();
+	//	} catch (IOException e) {
+	//		e.printStackTrace();
+	//	} catch (ClassNotFoundException e) {
+	//		e.printStackTrace();
+	//	}
+		
+		
+		return false;
+		
 	}
 }

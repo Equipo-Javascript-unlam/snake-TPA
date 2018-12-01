@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.Client.Cliente;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,6 +33,7 @@ public class NuevaSala extends JFrame {
 	private JComboBox<?> comboBoxCantSnakes;
 	private java.awt.List listPlayers;
 	private String nombreJugador;
+	private Cliente cliente;
 
 	/**
 	 * Launch the application.
@@ -38,7 +42,7 @@ public class NuevaSala extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NuevaSala frame = new NuevaSala("Test");
+					NuevaSala frame = new NuevaSala("Test", null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,8 +54,10 @@ public class NuevaSala extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NuevaSala(String nombreJugador) {
+	public NuevaSala(String nombreJugador, Cliente cliente) {
 		this.nombreJugador = nombreJugador;
+		this.cliente = cliente;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 536, 400);
 		contentPane = new JPanel();
@@ -109,7 +115,7 @@ public class NuevaSala extends JFrame {
 				else
 					nombres.add("Snake" + i);
 			}
-			new VentanaTablero(nombres, LARGO, ANCHO);
+			new VentanaTablero(nombres, LARGO, ANCHO, cliente);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
