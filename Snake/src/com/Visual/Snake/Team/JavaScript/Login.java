@@ -5,8 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.Server.Servidor;
-
+import com.Client.Cliente;
+import com.Client.Usuario;
+import com.Server.DatoComunicacion;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -28,6 +29,7 @@ public class Login extends JFrame {
 	private JButton forgotButton;
 	private JLabel passwordTextField;
 	private JButton registerButton;
+	private static Cliente cliente;
 
 	/**
 	 * Launch the application.
@@ -37,6 +39,7 @@ public class Login extends JFrame {
 			public void run() {
 				try {
 					Login frame = new Login();
+					cliente = new Cliente();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -106,22 +109,22 @@ public class Login extends JFrame {
 			return;
 		}
 
-		// esto es para pruebas, reemplazarlo
-		Servidor sv = new Servidor();
-		int state = sv.buscarUsuario(nombre, pass);
+		int state = cliente.loguear(new Usuario(nombre, pass)); 
 
-		if (state == 1) {// nombre.equals("Javascript") && pass.equals("123")) {
+		if (state == 1) {
 			new Menu(nombre);
 			dispose();
-		} else if (state == 0) {
+		} else if(state == 0){
 			passTextField.setText("");
+			nameTextField.setText("");
 			JOptionPane.showMessageDialog(null, "Nombre de usuario o contrase\u00F1a incorrectos", "Error login",
 					JOptionPane.WARNING_MESSAGE);
 		} else {
-			JOptionPane.showMessageDialog(null, "El usuario no existe, registrese", "Error login",
+			passTextField.setText("");
+			nameTextField.setText("");
+			JOptionPane.showMessageDialog(null, "Error al conectar con el servidor", "Error login",
 					JOptionPane.WARNING_MESSAGE);
 		}
-
 	}
 
 	// Aca se capturan las distintas acciones en la ventana

@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import org.jboss.logging.Logger;
 
+import com.Client.Usuario;
 import com.Visual.Snake.Team.JavaScript.Login;
 
 public class ConexionCliente extends Thread {
@@ -35,9 +36,14 @@ public class ConexionCliente extends Thread {
 
 		while (conectado) {
 			try {
-				// Lee un mensaje enviado por el cliente
-				String name = in.readUTF();
-			} catch (IOException ex) {
+				Usuario user = (Usuario) in.readObject();
+				if(user.getUser() == "Javascritpt" && user.getPass() == "123") {
+					out.writeInt(1);
+				} else {
+					out.writeInt(0);
+				}
+				
+			} catch (IOException | ClassNotFoundException ex) {
 				log.info("Cliente con la IP " + socket.getInetAddress().getHostName() + " desconectado.");
 				conectado = false;
 

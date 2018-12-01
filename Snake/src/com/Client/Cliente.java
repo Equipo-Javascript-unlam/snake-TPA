@@ -28,18 +28,17 @@ public class Cliente {
 		}
 	}
 
-	public static boolean loguear(Usuario user) {
+	public int loguear(Usuario user) {
 		try {
 			out.writeObject(user);
-			String message = in.readUTF();
-			
-			if(message.equals("error"))
-				return false;
-		} catch (IOException e) {
+			return (int) in.readObject();
+		} catch (IOException  e) {
 			log.error("Error al enviar el usuario" + e.getMessage() + "");
+			return 0;
+		} catch (NullPointerException | ClassNotFoundException e) {
+			log.error("Error al conectarse con el servidor" + e.getMessage() + "");
+			return -1;
 		}
-		
-		return true;
 	}
 	
 	public static DatoComunicacion recibirRespuestaServidor() throws ClassNotFoundException, IOException {
@@ -53,22 +52,21 @@ public class Cliente {
 	public static void recibirMensajesServidor() {
 		DatoComunicacion data;
 
-		new Login();
 		// Bucle infinito que recibe mensajes del servidor
 		boolean conectado = true;
-//		while (conectado) {
-//			try {
-//				in.readObject();
-//			} catch (IOException ex) {
-//				log.error("Error al leer el stream de entrada: " + ex.getMessage());
-//				conectado = false;
-//			} catch (NullPointerException ex) {
-//				log.error("El socket no se creo correctamente. ");
-//				conectado = false;
-//			} catch (ClassNotFoundException e) {
-//				log.error("Erro al leer el stream de entrada: " + e.getMessage());
-//			}
-//		}
+		while (conectado) {
+			try {
+				in.readObject();
+			} catch (IOException ex) {
+				log.error("Error al leer el stream de entrada: " + ex.getMessage());
+				conectado = false;
+			} catch (NullPointerException ex) {
+				log.error("El socket no se creo correctamente. ");
+				conectado = false;
+			} catch (ClassNotFoundException e) {
+				log.error("Erro al leer el stream de entrada: " + e.getMessage());
+			}
+		}
 	}
 
 	public static void enviarData(DatoComunicacion data) {
