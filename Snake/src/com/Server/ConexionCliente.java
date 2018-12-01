@@ -7,18 +7,22 @@ import java.net.Socket;
 
 import org.jboss.logging.Logger;
 
+import com.Visual.Snake.Team.JavaScript.Login;
+
 public class ConexionCliente extends Thread {
 	private Logger log = Logger.getLogger(ConexionCliente.class);
-	private ObjectInputStream entradaDatos;
-	private ObjectOutputStream salidaDatos;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
 	private Socket socket;
 
 	public ConexionCliente(Socket socket) {
 		this.socket = socket;
 
 		try {
-			entradaDatos = new ObjectInputStream(socket.getInputStream());
-			salidaDatos = new ObjectOutputStream(socket.getOutputStream());
+			in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+			
+			
 		} catch (IOException ex) {
 			log.error("Error al crear los stream de entrada y salida : " + ex.getMessage());
 		}
@@ -32,20 +36,17 @@ public class ConexionCliente extends Thread {
 		while (conectado) {
 			try {
 				// Lee un mensaje enviado por el cliente
-				data = (DatoComunicacion) entradaDatos.readObject();
+				String name = in.readUTF();
 			} catch (IOException ex) {
 				log.info("Cliente con la IP " + socket.getInetAddress().getHostName() + " desconectado.");
 				conectado = false;
-				// Si se ha producido un error al recibir datos del cliente se cierra la
-				// conexion con el.
+
 				try {
-					entradaDatos.close();
-					salidaDatos.close();
+					in.close();
+					out.close();
 				} catch (IOException ex2) {
 					log.error("Error al cerrar los stream de entrada y salida :" + ex2.getMessage());
 				}
-			} catch (ClassNotFoundException e) {
-				log.error("Error al cerrar los stream de entrada y salida :" + e.getMessage());
 			}
 		}
 	}

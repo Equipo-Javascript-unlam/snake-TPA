@@ -21,19 +21,17 @@ public class Servidor {
 	private Tablero tablero;
 
 	public Servidor() {
-		final int PUERTO = 10000;
+		final int PUERTO = 12345;
 		Logger log = Logger.getLogger(Servidor.class);
 
 		int maximoConexiones = 10; // Maximo de conexiones simultaneas
 		ServerSocket servidor = null;
 		Socket socket = null;
-		// MensajesChat mensajes = new MensajesChat();
 
 		try {
-			// Se crea el serverSocket
 			servidor = new ServerSocket(PUERTO, maximoConexiones);
+			System.out.println("Server on");
 
-			// Bucle infinito para esperar conexiones
 			while (true) {
 				socket = servidor.accept();
 
@@ -53,7 +51,14 @@ public class Servidor {
 	}
 
 	public static void main(String[] args) {
-
+		Servidor server = new Servidor();
+		try {
+			server.ProcesarTablero();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void ProcesarTablero() throws InterruptedException {
