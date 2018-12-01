@@ -147,6 +147,11 @@ public class Snake {
 		return bodySnake.size() + 1;
 	}
 	
+	public void setDireccion(Direccion direccion)
+	{
+		this.direccion=direccion;
+	}
+	
 	public Direccion getDireccion() {
 		return this.direccion;
 	}

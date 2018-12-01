@@ -57,7 +57,7 @@ public class NuevaSala extends JFrame {
 	public NuevaSala(String nombreJugador, Cliente cliente) {
 		this.nombreJugador = nombreJugador;
 		this.cliente = cliente;
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 536, 400);
 		contentPane = new JPanel();
@@ -100,22 +100,19 @@ public class NuevaSala extends JFrame {
 		setVisible(true);
 		addListener();
 	}
-	
+
 	public String getNombre() {
 		return nombreJugador;
 	}
-	
+
 	private void iniciarPartida() {
 		try {
 			List<String> nombres = new ArrayList<>();
 
-			for (int i = 0; i < comboBoxCantSnakes.getSelectedIndex() + 2; i++) {
-				if (i < listPlayers.getItemCount())
-					nombres.add(listPlayers.getItem(i));
-				else
-					nombres.add("Snake" + i);
+			for (int i = 0; i < listPlayers.getItemCount(); i++) {
+				nombres.add(listPlayers.getItem(i));
 			}
-			new VentanaTablero(nombres, LARGO, ANCHO, cliente);
+			new VentanaTablero(nombres, LARGO, ANCHO, cliente, comboBoxCantSnakes.getSelectedIndex() + 2);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -137,40 +134,40 @@ public class NuevaSala extends JFrame {
 		comboBoxCantSnakes.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					iniciarPartida();
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		listPlayers.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					iniciarPartida();
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}

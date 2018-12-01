@@ -34,7 +34,7 @@ public class VentanaTablero extends JFrame {
 					List<String> names = new ArrayList<>();
 					Login.nombre = "Test";
 					names.add(Login.nombre);
-					VentanaTablero frame = new VentanaTablero(names, 25, 25, null);
+					VentanaTablero frame = new VentanaTablero(names, 25, 25, null, 2);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +62,8 @@ public class VentanaTablero extends JFrame {
 		}
 	}
 
-	public VentanaTablero(List<String> nameSnakes, int largo, int ancho, Cliente cliente) throws InterruptedException {
+	public VentanaTablero(List<String> nameSnakes, int largo, int ancho, Cliente cliente, int cantSerientes)
+			throws InterruptedException {
 		VentanaTablero.largo = largo;
 		VentanaTablero.ancho = ancho;
 		this.cliente = cliente;
@@ -87,7 +88,8 @@ public class VentanaTablero extends JFrame {
 		listPlayers.setBounds(650, 20, 300, 500);
 		listPlayers.setFocusable(false);
 		listPlayers.setFont(getFont().deriveFont(Font.BOLD, 20));
-		for(String nombreJugador: nameSnakes) {
+
+		for (String nombreJugador : nameSnakes) {
 			listPlayers.add(nombreJugador);
 		}
 
@@ -98,7 +100,14 @@ public class VentanaTablero extends JFrame {
 			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
 			tablero.getSnake(i).setColor(changeColor(i));
 		}
-		
+
+		for (int i = nameSnakes.size(); i < cantSerientes; i++) {
+			tablero.colocarBot();
+			listPlayers.add(tablero.getSnake(i).getNombreJugador());
+			tablero.getSnake(i).cambiarDireccion(Direccion.getDirRand());
+			tablero.getSnake(i).setColor(changeColor(i));
+		}
+
 		serpiente = tablero.getSnake(0);
 		// Game Loop
 		Thread hilo = new Thread(new Runnable() {
@@ -113,11 +122,11 @@ public class VentanaTablero extends JFrame {
 						salir = MyKeyListener.escapeKeyPressed();
 
 						// reemplazar esto una vez creado servidor cliente
-						if (!salir && tablero.getCantidadSnakes() > 0){
+						if (!salir && tablero.getCantidadSnakes() > 0) {
 							for (int i = 0; i < tablero.getCantidadSnakes(); i++)
 								tablero.getSnake(i).moverse();
-							}
-							
+						}
+
 						else {
 							if (!salir)
 								JOptionPane.showMessageDialog(null,
@@ -128,7 +137,7 @@ public class VentanaTablero extends JFrame {
 							dispose();
 							break;
 						}
-						//tablero = dataDelServer
+						// tablero = dataDelServer
 						tablero.colision();
 						contentPane.repaint();
 						repaint();
@@ -159,7 +168,8 @@ public class VentanaTablero extends JFrame {
 			for (int j = 0; j < tablero.getCantidadSnakes(); j++) {
 				graphics.setColor(tablero.getSnake(j).getColor());
 				p = tablero.getSnake(j).getPosicion();
-				graphics.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
+				graphics.fillRect(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
+						CUADRO - SEPARACION);
 
 				for (int i = 0; i < tablero.getSnake(j).getLongitud() - 1; i++) {
 					p = tablero.getSnake(j).getCuerpo().get(i).getPosicion();
@@ -186,7 +196,8 @@ public class VentanaTablero extends JFrame {
 
 			for (int i = 0; i < tablero.getCantidadFrutas(); i++) {
 				p = tablero.getPosicionFruta(i);
-				graphics.fillOval(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION, CUADRO - SEPARACION);
+				graphics.fillOval(CUADRO * (int) p.getX(), CUADRO * (int) p.getY(), CUADRO - SEPARACION,
+						CUADRO - SEPARACION);
 			}
 		}
 

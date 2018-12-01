@@ -17,7 +17,8 @@ public class SnakeIA extends Snake {
 
 	public void moverse() {
 		tablero = tablero.getTablero();
-		
+		this.setDireccion(getDireccionIA());
+		super.moverse();
 	}
 	
 	public Direccion getDireccionIA() {
