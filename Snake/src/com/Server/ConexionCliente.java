@@ -38,9 +38,9 @@ public class ConexionCliente extends Thread {
 			try {
 				Usuario user = (Usuario) in.readObject();
 				if(user.getUser() == "Javascritpt" && user.getPass() == "123") {
-					out.writeInt(1);
+					out.writeObject(1);
 				} else {
-					out.writeInt(0);
+					out.writeObject(0);;
 				}
 				
 			} catch (IOException | ClassNotFoundException ex) {
