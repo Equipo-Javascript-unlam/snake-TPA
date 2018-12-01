@@ -48,7 +48,7 @@ public class Servidor {
 
 			while (true) {
 				socket = servidor.accept();
-				ConexionCliente cc = new ConexionCliente(socket, servidor);
+				ConexionCliente cc = new ConexionCliente(socket);
 				cc.start();
 			}
 		} catch (IOException ex) {
@@ -97,28 +97,12 @@ public class Servidor {
 	}
 
 	public static int buscarUsuario(String user, String pass) throws SQLException {
-		// String query = "SELECT * FROM Usuarios WHERE user=? AND pass=?";
-		String query = "SELECT * FROM Usuarios WHERE user=?";
 		ResultSet rs = null;
 		PreparedStatement pst = null;
-		
+		int res = 0;
 		try {
 			connection = SqliteConection.dbConector();
-			pst = connection.prepareStatement(query);
-			pst.setString(1, user);
-			// pst.setString(2, pass);
-
-			rs = pst.executeQuery();
-			int res = 0;
-
-			if (rs.next())
-				res++;
-
-			if (res == 0) {// usuario inexistente
-				return 2;
-			}
-
-			query = "SELECT * FROM Usuarios WHERE user=? AND pass=?";
+			String query = "SELECT * FROM Usuarios WHERE user=? AND pass=?";
 			pst = connection.prepareStatement(query);
 			pst.setString(1, user);
 			pst.setString(2, pass);
@@ -127,7 +111,7 @@ public class Servidor {
 			if (rs.next())
 				res++;
 
-			return res > 0 ? 1 : 0;
+			return res;
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
@@ -135,6 +119,7 @@ public class Servidor {
 		}finally {
 			rs.close();
 			pst.close();
+			connection.close();
 		}
 	}
 

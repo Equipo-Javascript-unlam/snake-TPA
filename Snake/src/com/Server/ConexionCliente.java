@@ -25,7 +25,7 @@ public class ConexionCliente extends Thread {
 	private static ArrayList<NuevaSala> SalasEnEspera = new ArrayList<NuevaSala>();
 	private boolean enMenu = false;
 
-	public ConexionCliente(Socket socket, ServerSocket servidor) {
+	public ConexionCliente(Socket socket) {
 		this.socket = socket;
 
 		try {
@@ -45,7 +45,6 @@ public class ConexionCliente extends Thread {
 			try {
 				while (!usuarioValido) {
 					Usuario user = (Usuario) in.readObject();
-					// if(user.getUser().equals("Javascript") && user.getPass().equals("123")) {
 					if (Servidor.buscarUsuario(user.getUser(), user.getPass()) == 1) {
 						out.writeObject(1);
 						usuarioValido = true;
